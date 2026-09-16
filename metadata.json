@@ -1,0 +1,6 @@
+{
+  "name": "Yapay Zeka ve Eğitim Teknolojileri Portalı",
+  "description": "Öğretmenler için Yapay Zeka ve Eğitim Teknolojileri Eğitim Portalı ve Kılavuzu. Eğitmen: Fatih TOLA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
