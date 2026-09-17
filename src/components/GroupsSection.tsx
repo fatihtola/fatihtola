@@ -5,17 +5,21 @@ import {
   MapPin, 
   Check, 
   Plus, 
+  Minus,
   Trash2, 
   FileEdit, 
   Save, 
   CalendarDays,
+  Calendar,
   UserPlus,
   Lock,
   ShieldAlert,
   ShieldCheck,
-  LogIn
+  LogIn,
+  FileSpreadsheet
 } from 'lucide-react';
 import { TeacherGroup, Participant } from '../types';
+import { ExportSheetsModal } from './ExportSheetsModal';
 
 interface GroupsSectionProps {
   groups: TeacherGroup[];
@@ -36,8 +40,74 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
   const [newTeacherBranch, setNewTeacherBranch] = useState('');
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [notesDraft, setNotesDraft] = useState('');
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [editingWeekDateIdx, setEditingWeekDateIdx] = useState<number | null>(null);
+  const [editingDateValue, setEditingDateValue] = useState('');
 
   const currentGroup = groups.find(g => g.id === selectedGroupId) || groups[0];
+
+  const handleSaveWeekDate = (wIdx: number, val: string) => {
+    if (!isAdmin || !currentGroup) return;
+    const cleanVal = val.trim();
+    const currentDates = [...(currentGroup.weekDates || [])];
+    while (currentDates.length <= wIdx) {
+      currentDates.push('');
+    }
+    currentDates[wIdx] = cleanVal;
+    onUpdateGroup({
+      ...currentGroup,
+      weekDates: currentDates
+    });
+    setEditingWeekDateIdx(null);
+    setEditingDateValue('');
+  };
+
+  const handleSetTodayDate = (wIdx: number) => {
+    const todayStr = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+    handleSaveWeekDate(wIdx, todayStr);
+  };
+
+  const handleAddWeekColumn = () => {
+    if (!isAdmin || !currentGroup) return;
+    const newTotal = currentGroup.totalWeeks + 1;
+    const updatedParticipants = currentGroup.participants.map(p => {
+      const newAtt = [...p.attendance];
+      while (newAtt.length < newTotal) {
+        newAtt.push(false);
+      }
+      return {
+        ...p,
+        attendance: newAtt
+      };
+    });
+
+    onUpdateGroup({
+      ...currentGroup,
+      totalWeeks: newTotal,
+      participants: updatedParticipants
+    });
+  };
+
+  const handleRemoveWeekColumn = () => {
+    if (!isAdmin || !currentGroup) return;
+    if (currentGroup.totalWeeks <= 1) return;
+    const newTotal = currentGroup.totalWeeks - 1;
+    const updatedParticipants = currentGroup.participants.map(p => ({
+      ...p,
+      attendance: p.attendance.slice(0, newTotal)
+    }));
+
+    const updatedDates = currentGroup.weekDates
+      ? currentGroup.weekDates.slice(0, newTotal)
+      : undefined;
+
+    onUpdateGroup({
+      ...currentGroup,
+      totalWeeks: newTotal,
+      weekDates: updatedDates,
+      participants: updatedParticipants
+    });
+  };
 
   const handleToggleAttendance = (participantId: string, weekIndex: number) => {
     if (!isAdmin) {
@@ -318,9 +388,54 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                         : "Öğretmen kişisel verileri ve katılım çizelgesi gizlilik nedeniyle yönetici paneline bağlıdır."}
                     </p>
                   </div>
-                  <span className="text-xs text-slate-400 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800 self-start sm:self-auto">
-                    Kayıtlı: <strong className="text-white">{currentGroup.participants.length}</strong> Öğretmen
-                  </span>
+                  <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+                    {/* E-Tablolara Aktar (Yalnızca Yönetici Aktifken Görünür) */}
+                    {isAdmin && (
+                      <button
+                        id="export-to-sheets-btn"
+                        onClick={() => setIsExportModalOpen(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/40 hover:border-emerald-500 text-emerald-300 hover:text-white text-xs font-semibold shadow-sm transition-all active:scale-95"
+                        title="Katılımcı ve yoklama çizelgesini Google E-Tablolar ve Excel için aktar / aç"
+                      >
+                        <FileSpreadsheet className="w-3.5 h-3.5" />
+                        <span>E-Tablolara Aktar</span>
+                      </button>
+                    )}
+
+                    {/* Hafta Eksilt (-) ve Hafta Ekle (+) Butonları (Yalnızca Yönetici Aktifken Görünür) */}
+                    {isAdmin && (
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          id="remove-week-top-btn"
+                          onClick={handleRemoveWeekColumn}
+                          disabled={currentGroup.totalWeeks <= 1}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-sm transition-all active:scale-95 ${
+                            currentGroup.totalWeeks <= 1
+                              ? 'bg-slate-800/40 border-slate-800 text-slate-600 cursor-not-allowed opacity-60'
+                              : 'bg-rose-600/20 hover:bg-rose-600 border-rose-500/40 hover:border-rose-500 text-rose-300 hover:text-white'
+                          }`}
+                          title={currentGroup.totalWeeks <= 1 ? 'En az 1 hafta kalmalıdır' : `Son hafta sütununu çıkar (-H${currentGroup.totalWeeks})`}
+                        >
+                          <Minus className="w-3.5 h-3.5" />
+                          <span>Hafta Çıkar (-H{currentGroup.totalWeeks})</span>
+                        </button>
+
+                        <button
+                          id="add-week-top-btn"
+                          onClick={handleAddWeekColumn}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 border border-blue-500/40 hover:border-blue-500 text-blue-300 hover:text-white text-xs font-semibold shadow-sm transition-all active:scale-95"
+                          title="Programa yeni hafta sütunu ekle (+1 Hafta)"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Hafta Ekle (+H{currentGroup.totalWeeks + 1})</span>
+                        </button>
+                      </div>
+                    )}
+
+                    <span className="text-xs text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
+                      Kayıtlı: <strong className="text-white">{currentGroup.participants.length}</strong> Öğretmen
+                    </span>
+                  </div>
                 </div>
 
                 {!isAdmin ? (
@@ -357,18 +472,140 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                           <tr>
                             <th className="py-3 px-4">Öğretmen Adı Soyadı</th>
                             <th className="py-3 px-4">Branş</th>
-                            {Array.from({ length: currentGroup.totalWeeks }).map((_, wIdx) => (
-                              <th key={wIdx} className="py-3 px-2 text-center">
-                                H{wIdx + 1}
+                            {Array.from({ length: currentGroup.totalWeeks }).map((_, wIdx) => {
+                              const dateStr = currentGroup.weekDates?.[wIdx];
+                              const isEditing = editingWeekDateIdx === wIdx;
+
+                              return (
+                                <th key={wIdx} className="py-2.5 px-2 text-center select-none min-w-[76px] align-top">
+                                  <div className="flex flex-col items-center justify-center gap-1">
+                                    <div className="flex items-center gap-1 font-bold text-slate-200">
+                                      <span>H{wIdx + 1}</span>
+                                      {isAdmin && (
+                                        <button
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (isEditing) {
+                                              setEditingWeekDateIdx(null);
+                                            } else {
+                                              setEditingWeekDateIdx(wIdx);
+                                              setEditingDateValue(dateStr || '');
+                                            }
+                                          }}
+                                          title={`${wIdx + 1}. Hafta Tarihini Düzenle`}
+                                          className="text-slate-400 hover:text-blue-400 p-0.5 rounded transition-colors"
+                                        >
+                                          <Calendar className="w-3 h-3" />
+                                        </button>
+                                      )}
+                                    </div>
+
+                                    {/* Date display or inline edit */}
+                                    {isAdmin && isEditing ? (
+                                      <div 
+                                        className="flex flex-col items-center gap-1 mt-0.5" 
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <input
+                                          type="text"
+                                          value={editingDateValue}
+                                          onChange={(e) => setEditingDateValue(e.target.value)}
+                                          placeholder="Örn: 16 Eki"
+                                          autoFocus
+                                          className="w-20 px-1.5 py-0.5 bg-slate-950 border border-blue-500 rounded text-[10px] text-white text-center focus:outline-none focus:ring-1 focus:ring-blue-400"
+                                          onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                              handleSaveWeekDate(wIdx, editingDateValue);
+                                            } else if (e.key === 'Escape') {
+                                              setEditingWeekDateIdx(null);
+                                            }
+                                          }}
+                                        />
+                                        <div className="flex items-center gap-1">
+                                          <button
+                                            type="button"
+                                            onClick={() => handleSetTodayDate(wIdx)}
+                                            title="Bugünün tarihini ekle"
+                                            className="px-1 py-0.5 bg-blue-600/30 hover:bg-blue-600 text-[9px] text-blue-200 rounded font-normal transition-colors"
+                                          >
+                                            Bugün
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => handleSaveWeekDate(wIdx, editingDateValue)}
+                                            title="Kaydet"
+                                            className="px-1 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-[9px] text-white rounded font-bold transition-colors"
+                                          >
+                                            ✓
+                                          </button>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        disabled={!isAdmin}
+                                        onClick={() => {
+                                          if (isAdmin) {
+                                            setEditingWeekDateIdx(wIdx);
+                                            setEditingDateValue(dateStr || '');
+                                          }
+                                        }}
+                                        title={isAdmin ? `${wIdx + 1}. Hafta Tarihini Belirlemek / Değiştirmek İçin Tıklayın` : undefined}
+                                        className={`text-[10px] px-1.5 py-0.5 rounded transition-all leading-tight max-w-[80px] truncate ${
+                                          dateStr
+                                            ? 'text-blue-300 font-medium bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30'
+                                            : isAdmin
+                                            ? 'text-slate-500 hover:text-slate-200 border border-dashed border-slate-700 hover:border-slate-500'
+                                            : 'text-slate-600'
+                                        }`}
+                                      >
+                                        {dateStr || (isAdmin ? '+ Tarih' : '-')}
+                                      </button>
+                                    )}
+                                  </div>
+                                </th>
+                              );
+                            })}
+
+                            {/* - / + Week column buttons in header (Admin only) */}
+                            {isAdmin && (
+                              <th className="py-2.5 px-2 text-center align-middle">
+                                <div className="flex items-center justify-center gap-1">
+                                  <button
+                                    type="button"
+                                    id="table-header-remove-week-btn"
+                                    onClick={handleRemoveWeekColumn}
+                                    disabled={currentGroup.totalWeeks <= 1}
+                                    title={currentGroup.totalWeeks <= 1 ? 'En az 1 hafta kalmalıdır' : `Son Hafta Sütununu Çıkar (-H${currentGroup.totalWeeks})`}
+                                    className={`inline-flex items-center justify-center w-6 h-6 rounded-md border text-xs font-bold transition-all shadow-sm active:scale-95 ${
+                                      currentGroup.totalWeeks <= 1
+                                        ? 'bg-slate-800/40 border-slate-800 text-slate-600 cursor-not-allowed opacity-50'
+                                        : 'bg-rose-600/20 hover:bg-rose-600 border-rose-500/40 hover:border-rose-500 text-rose-300 hover:text-white'
+                                    }`}
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    id="table-header-add-week-btn"
+                                    onClick={handleAddWeekColumn}
+                                    title="Yeni Hafta Sütunu Ekle (+1 Hafta)"
+                                    className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-blue-600/20 hover:bg-blue-600 border border-blue-500/40 hover:border-blue-500 text-blue-300 hover:text-white text-xs font-bold transition-all shadow-sm active:scale-95"
+                                  >
+                                    <Plus className="w-3 h-3" />
+                                  </button>
+                                </div>
                               </th>
-                            ))}
+                            )}
+
                             <th className="py-3 px-3 text-right">İşlem</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-800/60">
                           {currentGroup.participants.length === 0 ? (
                             <tr>
-                              <td colSpan={currentGroup.totalWeeks + 3} className="py-6 text-center text-slate-500 text-xs">
+                              <td colSpan={currentGroup.totalWeeks + (isAdmin ? 4 : 3)} className="py-6 text-center text-slate-500 text-xs">
                                 Bu grupta henüz kayıtlı öğretmen bulunmuyor. Aşağıdaki formdan ekleyebilirsiniz.
                               </td>
                             </tr>
@@ -405,6 +642,14 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                                     </td>
                                   );
                                 })}
+
+                                {/* Empty cell to align with + week column in header */}
+                                {isAdmin && (
+                                  <td className="py-3 px-2 text-center text-slate-700 text-xs font-mono">
+                                    ·
+                                  </td>
+                                )}
+
                                 <td className="py-3 px-3 text-right">
                                   <button
                                     onClick={() => handleRemoveParticipant(p.id)}
@@ -504,6 +749,14 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
           </div>
         </div>
       )}
+
+      {/* Export to Sheets Modal (Google E-Tablolar & Excel) */}
+      <ExportSheetsModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        groups={groups}
+        selectedGroupId={selectedGroupId}
+      />
     </div>
   );
 };

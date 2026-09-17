@@ -9,6 +9,7 @@ export interface TeacherGroup {
   totalWeeks: number;
   participants: Participant[];
   notes: string;
+  weekDates?: string[]; // Date string for each week, e.g. ["14 Eki", "21 Eki"]
 }
 
 export interface Participant {
