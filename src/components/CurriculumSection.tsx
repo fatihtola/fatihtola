@@ -109,18 +109,16 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
             </div>
           )}
 
-          <button
-            id="add-new-week-btn"
-            onClick={handleAddContentClick}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold shadow-md transition-all active:scale-95 ${
-              isAdmin
-                ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30'
-                : 'bg-slate-800 hover:bg-slate-700 text-blue-300 border border-blue-500/30'
-            }`}
-          >
-            {isAdmin ? <PlusCircle className="w-4 h-4" /> : <Lock className="w-4 h-4 text-blue-400" />}
-            <span>{isAdmin ? 'Yeni Oturum / İçerik Ekle' : 'İçerik Ekle (Yönetici)'}</span>
-          </button>
+          {isAdmin && (
+            <button
+              id="add-new-week-btn"
+              onClick={handleAddContentClick}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold shadow-md transition-all active:scale-95 bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Yeni Oturum / İçerik Ekle</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -147,13 +145,15 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
           <div className="text-center py-12 bg-slate-900/40 border border-slate-800 rounded-2xl p-6">
             <Calendar className="w-10 h-10 text-slate-600 mx-auto mb-3" />
             <p className="text-sm text-slate-400 font-medium">Bu kategoride henüz oturum bulunamadı.</p>
-            <button
-              onClick={handleAddContentClick}
-              className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 text-xs font-medium text-white shadow-md hover:bg-blue-500 transition-colors"
-            >
-              {isAdmin ? <PlusCircle className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-              <span>{isAdmin ? 'İlk İçeriği Ekle' : 'İçerik Eklemek İçin Yönetici Girişi Yap'}</span>
-            </button>
+            {isAdmin && (
+              <button
+                onClick={handleAddContentClick}
+                className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 text-xs font-medium text-white shadow-md hover:bg-blue-500 transition-colors"
+              >
+                <PlusCircle className="w-3.5 h-3.5" />
+                <span>İlk İçeriği Ekle</span>
+              </button>
+            )}
           </div>
         ) : (
           filteredWeeks.map((week) => {

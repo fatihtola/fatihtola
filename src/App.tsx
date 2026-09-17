@@ -14,7 +14,6 @@ import { INITIAL_GROUPS, INITIAL_WEEKS, TRAINER_INFO, FEATURED_AI_TOOLS } from '
 import { TeacherGroup, WeekSession } from './types';
 import { 
   Sparkles, 
-  RotateCcw, 
   Download, 
   Search, 
   ExternalLink,
@@ -22,8 +21,7 @@ import {
   Calendar,
   Wrench,
   Lock,
-  ShieldCheck,
-  AlertTriangle
+  ShieldCheck
 } from 'lucide-react';
 
 export default function App() {
@@ -32,7 +30,6 @@ export default function App() {
   const [isTrainerModalOpen, setIsTrainerModalOpen] = useState<boolean>(false);
   const [isAddContentModalOpen, setIsAddContentModalOpen] = useState<boolean>(false);
   const [editingWeek, setEditingWeek] = useState<WeekSession | null>(null);
-  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState<boolean>(false);
 
   // Admin authentication state
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
@@ -93,8 +90,12 @@ export default function App() {
   }, [weeks]);
 
   // Handlers
-  const handleOpenAdminLogin = (reason?: string) => {
-    setAdminActionReason(reason || null);
+  const handleOpenAdminLogin = (reason?: unknown) => {
+    if (typeof reason === 'string' && reason.trim().length > 0) {
+      setAdminActionReason(reason);
+    } else {
+      setAdminActionReason(null);
+    }
     setIsAdminLoginModalOpen(true);
   };
 
@@ -154,22 +155,6 @@ export default function App() {
     }
     setEditingWeek(null);
     setIsAddContentModalOpen(true);
-  };
-
-  const handleResetData = () => {
-    setIsResetConfirmOpen(true);
-  };
-
-  const handleConfirmReset = () => {
-    setGroups(INITIAL_GROUPS);
-    setWeeks(INITIAL_WEEKS);
-    try {
-      localStorage.removeItem('portal_teacher_groups');
-      localStorage.removeItem('portal_weekly_curriculum');
-    } catch (err) {
-      console.warn('Storage clear error:', err);
-    }
-    setIsResetConfirmOpen(false);
   };
 
   const handleExportData = () => {
@@ -427,15 +412,6 @@ export default function App() {
               <Download className="w-3.5 h-3.5" />
               <span>Yedekle</span>
             </button>
-            <span>•</span>
-            <button
-              onClick={handleResetData}
-              className="hover:text-amber-400 transition-colors flex items-center gap-1"
-              title="Varsayılan Portal Verilerine Sıfırla"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Sıfırla</span>
-            </button>
           </div>
         </div>
       </footer>
@@ -468,40 +444,6 @@ export default function App() {
         onLogout={handleAdminLogout}
         actionReason={adminActionReason}
       />
-
-      {/* Reset Confirmation Modal */}
-      {isResetConfirmOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white">Portal Verilerini Sıfırla</h3>
-                <p className="text-xs text-slate-400">Varsayılan ayarlara dönme işlemi</p>
-              </div>
-            </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Tüm özel eklediğiniz haftalık eğitim oturumları ve öğretmen yoklama verileri sıfırlanacak ve portal ilk haline dönecektir. Devam etmek istediğinize emin misiniz?
-            </p>
-            <div className="flex items-center justify-end gap-2.5 pt-2">
-              <button
-                onClick={() => setIsResetConfirmOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors"
-              >
-                Vazgeç
-              </button>
-              <button
-                onClick={handleConfirmReset}
-                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold shadow-md transition-colors"
-              >
-                Evet, Sıfırla
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -21,7 +21,7 @@ interface GroupsSectionProps {
   groups: TeacherGroup[];
   onUpdateGroup: (updatedGroup: TeacherGroup) => void;
   isAdmin: boolean;
-  onOpenAdminLogin: () => void;
+  onOpenAdminLogin: (reason?: string) => void;
 }
 
 export const GroupsSection: React.FC<GroupsSectionProps> = ({
@@ -145,7 +145,7 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
             </div>
           ) : (
             <button
-              onClick={onOpenAdminLogin}
+              onClick={() => onOpenAdminLogin('Grup ve öğretmen yönetimi için lütfen yönetici girişi yapınız.')}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/30 text-blue-300 rounded-lg text-xs font-semibold transition-colors"
             >
               <Lock className="w-3.5 h-3.5" />
@@ -278,7 +278,7 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                     )
                   ) : (
                     <button
-                      onClick={onOpenAdminLogin}
+                      onClick={() => onOpenAdminLogin('Zümre notlarını düzenlemek için yönetici girişi yapınız.')}
                       title="Notları düzenlemek için yönetici girişi yapınız"
                       className="text-[11px] text-slate-500 hover:text-slate-400 flex items-center gap-1"
                     >
@@ -340,7 +340,7 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                     <div className="pt-2">
                       <button
                         id="locked-section-admin-login-btn"
-                        onClick={onOpenAdminLogin}
+                        onClick={() => onOpenAdminLogin('Katılımcı listesi ve yoklama çizelgesini görüntülemek ve düzenlemek için lütfen yönetici girişi yapınız.')}
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/25 transition-all active:scale-95"
                       >
                         <LogIn className="w-4 h-4" />

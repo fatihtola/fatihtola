@@ -138,13 +138,15 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <BookOpen className="w-4 h-4 text-blue-400" />
               <span>Haftalık Oturum İçerikleri</span>
             </button>
-            <button
-              id="hero-add-content-btn"
-              onClick={handleAddContentClick}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs sm:text-sm font-medium border border-slate-800 transition-all"
-            >
-              <span>{isAdmin ? '+ Yeni İçerik Ekle' : '+ Yeni İçerik Ekle (Yönetici)'}</span>
-            </button>
+            {isAdmin && (
+              <button
+                id="hero-add-content-btn"
+                onClick={handleAddContentClick}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs sm:text-sm font-medium border border-slate-800 transition-all"
+              >
+                <span>+ Yeni İçerik Ekle</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -155,16 +155,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hidden sm:inline">{isAdmin ? 'Yönetici Aktif' : 'Yönetici Girişi'}</span>
             </button>
 
-            {/* Add Content Button */}
-            <button
-              id="add-content-quick-button"
-              onClick={handleAddContentClick}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/30 transition-all active:scale-95"
-              title="Yeni Oturum veya Eğitim İçeriği Ekle"
-            >
-              <PlusCircle className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">İçerik Ekle</span>
-            </button>
+            {/* Add Content Button (Visible only to Admin) */}
+            {isAdmin && (
+              <button
+                id="add-content-quick-button"
+                onClick={handleAddContentClick}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/30 transition-all active:scale-95"
+                title="Yeni Oturum veya Eğitim İçeriği Ekle"
+              >
+                <PlusCircle className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">İçerik Ekle</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

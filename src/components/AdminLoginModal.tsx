@@ -35,16 +35,15 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
 
   if (!isOpen) return null;
 
-  const validPasswords = ['admin', 'fatih123', 'fatihtola', '123456', 'ogretmen', 'portal'];
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
 
     setTimeout(() => {
-      const normalized = password.trim().toLowerCase();
-      if (validPasswords.includes(normalized) || normalized === 'admin') {
+      const trimmed = password.trim();
+      const normalized = trimmed.toLowerCase();
+      if (trimmed === 'Ft12345' || normalized === 'ft12345') {
         onLogin();
         setPassword('');
         setError('');
@@ -91,7 +90,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           </div>
         </div>
 
-        {actionReason && !isAdmin && (
+        {typeof actionReason === 'string' && actionReason.trim().length > 0 && !isAdmin && (
           <div className="p-3 bg-amber-500/10 border border-amber-500/25 rounded-xl flex items-start gap-2.5 text-xs text-amber-200">
             <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <span>{actionReason}</span>
