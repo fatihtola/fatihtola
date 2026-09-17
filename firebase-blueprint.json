@@ -1,0 +1,126 @@
+{
+  "entities": {
+    "TeacherGroup": {
+      "title": "Teacher Group",
+      "description": "Information about a training cohort, weekly dates, notes, and teacher participants with attendance.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the group"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the group cohort"
+        },
+        "groupNumber": {
+          "type": "number",
+          "description": "Number of the group (e.g. 1 to 10)"
+        },
+        "day": {
+          "type": "string",
+          "description": "Day of the week for sessions"
+        },
+        "timeSlot": {
+          "type": "string",
+          "description": "Time slot for sessions"
+        },
+        "location": {
+          "type": "string",
+          "description": "Classroom or workshop location"
+        },
+        "totalWeeks": {
+          "type": "number",
+          "description": "Total count of training weeks"
+        },
+        "weekDates": {
+          "type": "array",
+          "description": "List of date labels for each week"
+        },
+        "notes": {
+          "type": "string",
+          "description": "General group notes"
+        },
+        "participants": {
+          "type": "array",
+          "description": "List of enrolled teachers with attendance records"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["id", "name", "groupNumber", "day", "timeSlot", "location", "totalWeeks"]
+    },
+    "CurriculumWeek": {
+      "title": "Curriculum Week",
+      "description": "Weekly curriculum syllabus, theoretical topics, AI practical exercises and tools.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the curriculum week"
+        },
+        "weekNumber": {
+          "type": "number",
+          "description": "Week number (1-10)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the week"
+        },
+        "dateRange": {
+          "type": "string",
+          "description": "Date range label"
+        },
+        "theme": {
+          "type": "string",
+          "description": "Theme of the week"
+        },
+        "theory": {
+          "type": "string",
+          "description": "Theoretical subject description"
+        },
+        "application": {
+          "type": "string",
+          "description": "Practical hands-on exercise description"
+        },
+        "tools": {
+          "type": "array",
+          "description": "AI tools covered"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Educator and curriculum notes"
+        },
+        "isCompleted": {
+          "type": "boolean",
+          "description": "Whether this week session has finished"
+        },
+        "homework": {
+          "type": "string",
+          "description": "Weekly project or assignment"
+        },
+        "resources": {
+          "type": "array",
+          "description": "Downloadable or link resources"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["id", "weekNumber", "title", "dateRange", "theme"]
+    }
+  },
+  "firestore": {
+    "/teacher_groups/{groupId}": {
+      "schema": "TeacherGroup",
+      "description": "Collection of teacher training groups, participants, and weekly attendance records"
+    },
+    "/curriculum_weeks/{weekId}": {
+      "schema": "CurriculumWeek",
+      "description": "Collection of weekly curriculum modules and course contents"
+    }
+  }
+}

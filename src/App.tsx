@@ -13,6 +13,13 @@ import { AdminLoginModal } from './components/AdminLoginModal';
 import { INITIAL_GROUPS, INITIAL_WEEKS, TRAINER_INFO, FEATURED_AI_TOOLS } from './data/portalData';
 import { TeacherGroup, WeekSession } from './types';
 import { 
+  subscribeToGroups, 
+  saveGroupToFirestore, 
+  subscribeToCurriculum, 
+  saveWeekToFirestore, 
+  deleteWeekFromFirestore 
+} from './services/portalFirestore';
+import { 
   Sparkles, 
   Download, 
   Search, 
@@ -30,6 +37,9 @@ export default function App() {
   const [isTrainerModalOpen, setIsTrainerModalOpen] = useState<boolean>(false);
   const [isAddContentModalOpen, setIsAddContentModalOpen] = useState<boolean>(false);
   const [editingWeek, setEditingWeek] = useState<WeekSession | null>(null);
+
+  // Cloud sync status
+  const [cloudStatus, setCloudStatus] = useState<'connected' | 'syncing' | 'error'>('syncing');
 
   // Admin authentication state
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
@@ -62,6 +72,31 @@ export default function App() {
     }
   });
 
+  // Real-time Firestore sync for Teacher Groups
+  useEffect(() => {
+    const unsub = subscribeToGroups((cloudGroups) => {
+      setGroups(cloudGroups);
+      setCloudStatus('connected');
+      try {
+        localStorage.setItem('portal_teacher_groups', JSON.stringify(cloudGroups));
+      } catch {}
+    }, groups);
+
+    return () => unsub();
+  }, []);
+
+  // Real-time Firestore sync for Curriculum Weeks
+  useEffect(() => {
+    const unsub = subscribeToCurriculum((cloudWeeks) => {
+      setWeeks(cloudWeeks);
+      try {
+        localStorage.setItem('portal_weekly_curriculum', JSON.stringify(cloudWeeks));
+      } catch {}
+    }, weeks);
+
+    return () => unsub();
+  }, []);
+
   // Save admin auth to localStorage
   useEffect(() => {
     try {
@@ -70,24 +105,6 @@ export default function App() {
       console.error('Failed to save admin state:', err);
     }
   }, [isAdmin]);
-
-  // Save to localStorage whenever groups change
-  useEffect(() => {
-    try {
-      localStorage.setItem('portal_teacher_groups', JSON.stringify(groups));
-    } catch (err) {
-      console.error('Failed to save groups:', err);
-    }
-  }, [groups]);
-
-  // Save to localStorage whenever weeks change
-  useEffect(() => {
-    try {
-      localStorage.setItem('portal_weekly_curriculum', JSON.stringify(weeks));
-    } catch (err) {
-      console.error('Failed to save weeks:', err);
-    }
-  }, [weeks]);
 
   // Handlers
   const handleOpenAdminLogin = (reason?: unknown) => {
@@ -112,6 +129,9 @@ export default function App() {
 
   const handleUpdateGroup = (updatedGroup: TeacherGroup) => {
     setGroups(prev => prev.map(g => g.id === updatedGroup.id ? updatedGroup : g));
+    saveGroupToFirestore(updatedGroup).catch((err) => {
+      console.error('Failed to sync group to Firestore:', err);
+    });
   };
 
   const handleSaveWeek = (week: WeekSession) => {
@@ -127,6 +147,9 @@ export default function App() {
         return next;
       }
       return [...prev, week].sort((a, b) => a.weekNumber - b.weekNumber);
+    });
+    saveWeekToFirestore(week).catch((err) => {
+      console.error('Failed to save week to Firestore:', err);
     });
     setEditingWeek(null);
   };
@@ -146,6 +169,9 @@ export default function App() {
       return;
     }
     setWeeks(prev => prev.filter(w => w.id !== weekId));
+    deleteWeekFromFirestore(weekId).catch((err) => {
+      console.error('Failed to delete week from Firestore:', err);
+    });
   };
 
   const handleOpenAddContent = () => {
@@ -217,6 +243,7 @@ export default function App() {
         onOpenAddContentModal={handleOpenAddContent}
         isAdmin={isAdmin}
         onOpenAdminLogin={handleOpenAdminLogin}
+        cloudStatus={cloudStatus}
       />
 
       {/* Main Content Area */}

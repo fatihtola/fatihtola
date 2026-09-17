@@ -11,7 +11,10 @@ import {
   Search,
   UserCheck,
   Lock,
-  ShieldCheck
+  ShieldCheck,
+  Cloud,
+  CheckCircle2,
+  RefreshCw
 } from 'lucide-react';
 import { TRAINER_INFO } from '../data/portalData';
 
@@ -24,6 +27,7 @@ interface NavbarProps {
   onOpenAddContentModal: () => void;
   isAdmin: boolean;
   onOpenAdminLogin: (reason?: string) => void;
+  cloudStatus?: 'connected' | 'syncing' | 'error';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -34,7 +38,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenTrainerModal,
   onOpenAddContentModal,
   isAdmin,
-  onOpenAdminLogin
+  onOpenAdminLogin,
+  cloudStatus = 'connected'
 }) => {
   const navItems = [
     { id: 'overview', label: 'Genel Bakış', icon: Compass },
@@ -139,6 +144,30 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </div>
             </button>
+
+            {/* Cloud Real-Time Sync Indicator */}
+            <div 
+              id="cloud-sync-status-indicator"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-[11px] text-slate-300 shadow-sm"
+              title="Bulut Veritabanı Aktif: Tüm değişiklikler canlı olarak internete kaydedilir ve farklı cihazlardan anında eşitlenir."
+            >
+              {cloudStatus === 'syncing' ? (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+                  <span className="text-amber-300 font-medium">Bulut Eşitleniyor</span>
+                </>
+              ) : cloudStatus === 'error' ? (
+                <>
+                  <Cloud className="w-3.5 h-3.5 text-rose-400" />
+                  <span className="text-rose-300 font-medium">Çevrimdışı</span>
+                </>
+              ) : (
+                <>
+                  <Cloud className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-emerald-300 font-medium">Bulut Senkronize</span>
+                </>
+              )}
+            </div>
 
             {/* Admin Login / Status Trigger */}
             <button
