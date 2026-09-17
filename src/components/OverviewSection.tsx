@@ -103,8 +103,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               <div className="text-xs text-slate-400 mt-0.5">Uygulamalı Atölye</div>
             </div>
             <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <div className="text-xl sm:text-2xl font-bold text-indigo-400">8 Hafta</div>
-              <div className="text-xs text-slate-400 mt-0.5">Kapsamlı Müfredat</div>
+              <div className="text-lg sm:text-xl font-bold text-indigo-400">2026-2027</div>
+              <div className="text-xs text-slate-400 mt-0.5">Sürekli Eğitim Dönemi</div>
             </div>
             <div 
               onClick={onOpenTrainerModal}

@@ -334,7 +334,7 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                         Katılımcı Listesi ve Yoklama Çizelgesi Korumalıdır
                       </h6>
                       <p className="text-xs text-slate-400 leading-relaxed">
-                        Öğretmen isimleri, branş bilgileri ve 8 haftalık devam-devamsızlık takip çizelgesi yalnızca eğitim koordinatörü ve yöneticilere açıktır.
+                        Öğretmen isimleri, branş bilgileri ve 2026-2027 eğitim dönemi devam-devamsızlık takip çizelgesi yalnızca eğitim koordinatörü ve yöneticilere açıktır.
                       </p>
                     </div>
                     <div className="pt-2">

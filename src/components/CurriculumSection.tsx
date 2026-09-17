@@ -290,11 +290,11 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
                       </div>
                     </div>
 
-                    {/* 60 Dakika Oturum Akışı */}
+                    {/* 40 Dakika Oturum Akışı */}
                     <div>
                       <h5 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-indigo-400" />
-                        60 Dakikalık Atölye Zaman Akışı (1 Saat)
+                        40 Dakikalık Atölye Zaman Akışı (1 Ders Saati)
                       </h5>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                         {week.sessionFlow.map((flow, idx) => (

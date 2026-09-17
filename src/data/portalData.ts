@@ -677,14 +677,14 @@ export const INITIAL_WEEKS: WeekSession[] = [
     title: "8. Hafta: Öğretmen Proje Sunumları, Okul İçi Yaygınlaştırma ve Sertifikasyon",
     duration: "40 Dakika (1 Ders Saati)",
     category: "proje",
-    summary: "10 grubun 8 haftalık eğitim süresince geliştirdiği ders materyalleri, soru bankaları ve yapay zekâ asistanlarının sergilenmesi. Okul içi iyi örnekler havuzunun oluşturulması ve katılım belgeleri.",
+    summary: "10 grubun 2026-2027 eğitim süresince geliştirdiği ders materyalleri, soru bankaları ve yapay zekâ asistanlarının sergilenmesi. Okul içi iyi örnekler havuzunun oluşturulması ve katılım belgeleri.",
     learningOutcomes: [
       "Geliştirdiği eğitim materyalini zümre arkadaşlarına etkili şekilde sunar.",
       "Okul içi ortak Yapay Zekâ Eğitim Havuzuna materyal katkısı sağlar.",
       "Eğitim sonrasında sınıf içi düzenli yapay zekâ uygulama takvimini netleştirir."
     ],
     sessionFlow: [
-      { minuteRange: "00-08 dk", activity: "Açılış & 8 Haftanın Özeti", description: "Eğitmen Fatih TOLA'nın genel değerlendirmesi ve elde edilen kazanımlar." },
+      { minuteRange: "00-08 dk", activity: "Açılış & Dönem Özeti", description: "Eğitmen Fatih TOLA'nın genel değerlendirmesi ve elde edilen kazanımlar." },
       { minuteRange: "08-22 dk", activity: "Öğretmen Sunumları & Paylaşım", description: "Her katılımcının hazırladığı en iyi promptu veya materyali 2'şer dakikada tanıtması." },
       { minuteRange: "22-32 dk", activity: "Okul Yapay Zekâ Havuzuna Aktarım", description: "Üretilen tüm şablon ve materyallerin portal kütüphanesine kaydedilmesi." },
       { minuteRange: "32-40 dk", activity: "Katılım Belgeleri & Kapanış", description: "Katılım belgelerinin takdimi ve sonraki dönem ileri seviye grup planlaması." }
