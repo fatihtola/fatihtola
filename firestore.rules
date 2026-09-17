@@ -29,9 +29,7 @@ service cloud.firestore {
     function isValidCurriculumWeek(data) {
       return data.id is string &&
              data.weekNumber is number &&
-             data.title is string && data.title.size() <= 300 &&
-             data.dateRange is string &&
-             data.theme is string;
+             data.title is string && data.title.size() <= 300;
     }
 
     // Teacher training groups & attendance collection

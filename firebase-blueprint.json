@@ -54,7 +54,7 @@
     },
     "CurriculumWeek": {
       "title": "Curriculum Week",
-      "description": "Weekly curriculum syllabus, theoretical topics, AI practical exercises and tools.",
+      "description": "Weekly curriculum syllabus, learning outcomes, session flow, tools, practical exercises, and educator notes.",
       "type": "object",
       "properties": {
         "id": {
@@ -69,48 +69,56 @@
           "type": "string",
           "description": "Title of the week"
         },
-        "dateRange": {
+        "duration": {
           "type": "string",
-          "description": "Date range label"
+          "description": "Duration label (e.g. 40 Dakika)"
         },
-        "theme": {
+        "category": {
           "type": "string",
-          "description": "Theme of the week"
+          "description": "Category of the session"
         },
-        "theory": {
+        "summary": {
           "type": "string",
-          "description": "Theoretical subject description"
+          "description": "Pedagogical summary of the session"
         },
-        "application": {
+        "learningOutcomes": {
+          "type": "array",
+          "description": "List of learning outcomes"
+        },
+        "sessionFlow": {
+          "type": "array",
+          "description": "Minute-by-minute session flow breakdown"
+        },
+        "keyTools": {
+          "type": "array",
+          "description": "AI tools covered in the session"
+        },
+        "practicalExercise": {
           "type": "string",
           "description": "Practical hands-on exercise description"
         },
-        "tools": {
+        "samplePrompt": {
+          "type": "string",
+          "description": "Sample pedagogical prompt template"
+        },
+        "materials": {
           "type": "array",
-          "description": "AI tools covered"
+          "description": "Downloadable or link resources"
         },
         "notes": {
           "type": "string",
           "description": "Educator and curriculum notes"
         },
-        "isCompleted": {
+        "customAdded": {
           "type": "boolean",
-          "description": "Whether this week session has finished"
-        },
-        "homework": {
-          "type": "string",
-          "description": "Weekly project or assignment"
-        },
-        "resources": {
-          "type": "array",
-          "description": "Downloadable or link resources"
+          "description": "Flag indicating if this week was created by an admin"
         },
         "updatedAt": {
           "type": "string",
           "description": "ISO timestamp of last update"
         }
       },
-      "required": ["id", "weekNumber", "title", "dateRange", "theme"]
+      "required": ["id", "weekNumber", "title"]
     }
   },
   "firestore": {

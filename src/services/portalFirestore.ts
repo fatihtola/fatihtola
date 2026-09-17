@@ -134,13 +134,45 @@ export function subscribeToCurriculum(
   return unsubscribe;
 }
 
+function sanitizeWeekData(week: WeekSession): Record<string, any> {
+  return {
+    id: week.id,
+    weekNumber: week.weekNumber,
+    title: week.title,
+    duration: week.duration || '',
+    category: week.category || 'temel',
+    summary: week.summary || '',
+    learningOutcomes: week.learningOutcomes || [],
+    sessionFlow: (week.sessionFlow || []).map((sf) => ({
+      minuteRange: sf.minuteRange || '',
+      activity: sf.activity || '',
+      description: sf.description || '',
+    })),
+    keyTools: (week.keyTools || []).map((kt) => ({
+      name: kt.name || '',
+      url: kt.url || '',
+      purpose: kt.purpose || '',
+    })),
+    practicalExercise: week.practicalExercise || '',
+    samplePrompt: week.samplePrompt || '',
+    materials: (week.materials || []).map((m) => ({
+      title: m.title || '',
+      type: m.type || 'belge',
+      url: m.url || '',
+    })),
+    notes: week.notes || '',
+    customAdded: Boolean(week.customAdded),
+  };
+}
+
 /**
  * Save or update a single curriculum week in Firestore
  */
 export async function saveWeekToFirestore(week: WeekSession): Promise<void> {
   const docRef = doc(db, CURRICULUM_COLLECTION, week.id);
   try {
-    await setDoc(docRef, week, { merge: true });
+    const cleanWeek = sanitizeWeekData(week);
+    await setDoc(docRef, cleanWeek, { merge: true });
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `${CURRICULUM_COLLECTION}/${week.id}`);
     throw error;
@@ -168,7 +200,7 @@ export async function seedCurriculum(weeks: WeekSession[]): Promise<void> {
     const batch = writeBatch(db);
     weeks.forEach((wk) => {
       const docRef = doc(db, CURRICULUM_COLLECTION, wk.id);
-      batch.set(docRef, wk);
+      batch.set(docRef, sanitizeWeekData(wk));
     });
     await batch.commit();
   } catch (error) {

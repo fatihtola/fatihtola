@@ -417,13 +417,17 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4 text-slate-400">
-            <button
-              onClick={() => setActiveTab('groups')}
-              className="hover:text-blue-400 transition-colors"
-            >
-              10 Grup Programı
-            </button>
-            <span>•</span>
+            {isAdmin && (
+              <>
+                <button
+                  onClick={() => setActiveTab('groups')}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  10 Grup Programı
+                </button>
+                <span>•</span>
+              </>
+            )}
             <button
               onClick={() => setActiveTab('curriculum')}
               className="hover:text-blue-400 transition-colors"
@@ -436,15 +440,6 @@ export default function App() {
               className="hover:text-blue-400 transition-colors"
             >
               Ek Kaynaklar
-            </button>
-            <span>•</span>
-            <button
-              onClick={handleExportData}
-              className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-              title="Müfredat ve Grup Verilerini JSON Olarak İndir"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Yedekle</span>
             </button>
           </div>
         </div>

@@ -124,27 +124,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* Trainer Highlight Badge */}
-            <button
-              id="trainer-profile-button"
-              onClick={onOpenTrainerModal}
-              className="hidden md:flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-700/60 transition-all text-left shadow-sm group"
-              title="Eğitmen Profilini ve İletişim Bilgilerini Gör"
-            >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs ring-2 ring-blue-500/20 group-hover:ring-blue-500/50 transition-all">
-                FT
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] uppercase font-bold text-blue-400 tracking-wider">EĞİTMEN</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                </div>
-                <span className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
-                  {TRAINER_INFO.name}
-                </span>
-              </div>
-            </button>
-
             {/* Cloud Real-Time Sync Indicator (Visible only when Admin is active) */}
             {isAdmin && (
               <div 
