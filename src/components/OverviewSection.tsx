@@ -144,6 +144,77 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
         </div>
       </div>
 
+      {/* SECTION: 10 Eğitim Grubu & Haftalık 40 Dakika Programı (Moved above Katılımcılar Ne Kazanacak) */}
+      <section className="space-y-4" id="egitim-gruplari-ozet">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2.5">
+              <span className="w-1.5 h-5 bg-blue-500 rounded-full" />
+              10 Ayrı Öğretmen Grubu & Haftalık 40 Dakikalık Program
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+              Haftada 40 dakika sürecek 10 ayrı zümre ve branş grubu için zaman çizelgesi ve katılım takibi
+            </p>
+          </div>
+          {isAdmin && (
+            <button
+              id="overview-manage-groups-btn"
+              onClick={() => setActiveTab('groups')}
+              className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold group self-start sm:self-auto"
+            >
+              <span>Tüm Grup Listelerini & Yoklamayı Yönet</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          )}
+        </div>
+
+        {/* 10 Groups Quick Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {groups.map((grp) => (
+            <div
+              key={grp.id}
+              id={`overview-group-item-${grp.id}`}
+              onClick={isAdmin ? () => setActiveTab('groups') : undefined}
+              className={`p-3.5 rounded-xl border transition-all flex flex-col justify-between select-none ${
+                isAdmin
+                  ? 'bg-slate-900/60 hover:bg-slate-900 border-slate-800/80 hover:border-blue-700/60 cursor-pointer group'
+                  : 'bg-slate-900/40 border-slate-800/70 cursor-default'
+              }`}
+              title={isAdmin ? 'Grup detaylarına ve yoklama yönetimine git' : undefined}
+            >
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                    Grup {grp.groupNumber}
+                  </span>
+                  <span className="text-[11px] text-slate-400">
+                    {grp.participants.length} Öğretmen
+                  </span>
+                </div>
+                <h5 className={`text-xs font-bold line-clamp-1 ${isAdmin ? 'text-slate-200 group-hover:text-white' : 'text-slate-200'}`}>
+                  {grp.name.replace(/^\d+\.\s*Grup\s*\(/, '').replace(/\)$/, '')}
+                </h5>
+              </div>
+
+              <div className="mt-3 pt-2 border-t border-slate-800/60 text-[11px] space-y-1 text-slate-400">
+                <div className="flex items-center gap-1 text-slate-300">
+                  <Calendar className="w-3 h-3 text-blue-400" />
+                  <span>{grp.day}</span>
+                </div>
+                <div className="flex items-center gap-1 text-slate-400">
+                  <Clock className="w-3 h-3 text-indigo-400" />
+                  <span>{grp.timeSlot}</span>
+                </div>
+                <div className="flex items-center gap-1 text-slate-400 line-clamp-1">
+                  <MapPin className="w-3 h-3 text-cyan-400" />
+                  <span>{grp.location}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* SECTION 1: Katılımcılar Ne Kazanacak? (Exact request matching projeklavuz) */}
       <section className="space-y-4" id="katilimcilar-ne-kazanacak">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800 pb-3">
@@ -269,80 +340,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
         </div>
       </section>
 
-      {/* SECTION 3: 10 Eğitim Grubu & Haftalık 40 Dakika Programı (Highlighted user requirement) */}
-      <section className="space-y-4" id="egitim-gruplari-ozet">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800 pb-3">
-          <div>
-            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2.5">
-              <span className="w-1.5 h-5 bg-blue-500 rounded-full" />
-              10 Ayrı Öğretmen Grubu & Haftalık 40 Dakikalık Program
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Haftada 40 dakika sürecek 10 ayrı zümre ve branş grubu için zaman çizelgesi ve katılım takibi
-            </p>
-          </div>
-          {isAdmin && (
-            <button
-              id="overview-manage-groups-btn"
-              onClick={() => setActiveTab('groups')}
-              className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold group self-start sm:self-auto"
-            >
-              <span>Tüm Grup Listelerini & Yoklamayı Yönet</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          )}
-        </div>
-
-        {/* 10 Groups Quick Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {groups.map((grp) => (
-            <div
-              key={grp.id}
-              id={`overview-group-item-${grp.id}`}
-              onClick={() => {
-                if (isAdmin) {
-                  setActiveTab('groups');
-                } else {
-                  onOpenAdminLogin('Grup detayları ve yoklama çizelgesine erişmek için lütfen yönetici girişi yapınız.');
-                }
-              }}
-              className="p-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-blue-700/60 transition-all cursor-pointer group flex flex-col justify-between"
-              title={isAdmin ? 'Grup detaylarına git' : 'Grup listeleri ve yoklama yöneticiye özeldir'}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
-                    Grup {grp.groupNumber}
-                  </span>
-                  <span className="text-[11px] text-slate-400">
-                    {grp.participants.length} Öğretmen
-                  </span>
-                </div>
-                <h5 className="text-xs font-bold text-slate-200 group-hover:text-white line-clamp-1">
-                  {grp.name.replace(/^\d+\.\s*Grup\s*\(/, '').replace(/\)$/, '')}
-                </h5>
-              </div>
-
-              <div className="mt-3 pt-2 border-t border-slate-800/60 text-[11px] space-y-1 text-slate-400">
-                <div className="flex items-center gap-1 text-slate-300">
-                  <Calendar className="w-3 h-3 text-blue-400" />
-                  <span>{grp.day}</span>
-                </div>
-                <div className="flex items-center gap-1 text-slate-400">
-                  <Clock className="w-3 h-3 text-indigo-400" />
-                  <span>{grp.timeSlot}</span>
-                </div>
-                <div className="flex items-center gap-1 text-slate-400 line-clamp-1">
-                  <MapPin className="w-3 h-3 text-cyan-400" />
-                  <span>{grp.location}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION 4: Eğitmen & Okul Rehberi Mesajı */}
+      {/* SECTION 3: Eğitmen & Okul Rehberi Mesajı */}
       <div className="rounded-xl bg-gradient-to-r from-blue-950/40 via-slate-900 to-indigo-950/40 border border-blue-900/40 p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-500/20 shrink-0">
