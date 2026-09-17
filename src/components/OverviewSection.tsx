@@ -123,20 +123,13 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
-              id="hero-go-groups-btn"
-              onClick={() => setActiveTab('groups')}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-blue-600/30 transition-all active:scale-95"
-            >
-              <span>10 Grubu ve Programı İncele</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
               id="hero-go-curriculum-btn"
               onClick={() => setActiveTab('curriculum')}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-blue-600/30 transition-all active:scale-95"
             >
-              <BookOpen className="w-4 h-4 text-blue-400" />
+              <BookOpen className="w-4 h-4 text-white" />
               <span>Haftalık Oturum İçerikleri</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
             {isAdmin && (
               <button
@@ -288,13 +281,16 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               Haftada 40 dakika sürecek 10 ayrı zümre ve branş grubu için zaman çizelgesi ve katılım takibi
             </p>
           </div>
-          <button
-            onClick={() => setActiveTab('groups')}
-            className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold group self-start sm:self-auto"
-          >
-            <span>Tüm Grup Listelerini & Yoklamayı Yönet</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </button>
+          {isAdmin && (
+            <button
+              id="overview-manage-groups-btn"
+              onClick={() => setActiveTab('groups')}
+              className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold group self-start sm:self-auto"
+            >
+              <span>Tüm Grup Listelerini & Yoklamayı Yönet</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          )}
         </div>
 
         {/* 10 Groups Quick Cards */}
@@ -303,8 +299,15 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
             <div
               key={grp.id}
               id={`overview-group-item-${grp.id}`}
-              onClick={() => setActiveTab('groups')}
+              onClick={() => {
+                if (isAdmin) {
+                  setActiveTab('groups');
+                } else {
+                  onOpenAdminLogin('Grup detayları ve yoklama çizelgesine erişmek için lütfen yönetici girişi yapınız.');
+                }
+              }}
               className="p-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-blue-700/60 transition-all cursor-pointer group flex flex-col justify-between"
+              title={isAdmin ? 'Grup detaylarına git' : 'Grup listeleri ve yoklama yöneticiye özeldir'}
             >
               <div>
                 <div className="flex items-center justify-between mb-1.5">

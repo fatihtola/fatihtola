@@ -106,6 +106,13 @@ export default function App() {
     }
   }, [isAdmin]);
 
+  // If not admin and user attempts to open or is on groups tab, redirect to overview
+  useEffect(() => {
+    if (!isAdmin && activeTab === 'groups') {
+      setActiveTab('overview');
+    }
+  }, [isAdmin, activeTab]);
+
   // Handlers
   const handleOpenAdminLogin = (reason?: unknown) => {
     if (typeof reason === 'string' && reason.trim().length > 0) {

@@ -32,7 +32,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "1. Grup (Matematik & Fen Zümresi - A)",
     day: "Pazartesi",
     timeSlot: "15:30 - 16:10",
-    location: "BT Laboratuvarı 1",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -50,7 +50,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "2. Grup (Türkçe & Edebiyat Zümresi)",
     day: "Salı",
     timeSlot: "15:30 - 16:10",
-    location: "BT Laboratuvarı 1",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -67,7 +67,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "3. Grup (Yabancı Diller Zümresi)",
     day: "Çarşamba",
     timeSlot: "15:30 - 16:10",
-    location: "Dil Laboratuvarı",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -84,7 +84,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "4. Grup (Sosyal Bilgiler & Tarih/Coğrafya)",
     day: "Perşembe",
     timeSlot: "15:30 - 16:10",
-    location: "BT Laboratuvarı 1",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -101,7 +101,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "5. Grup (İlkokul / Sınıf Öğretmenleri - A)",
     day: "Cuma",
     timeSlot: "14:30 - 15:10",
-    location: "Öğretmenler Odası Toplantı Salonu",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -118,7 +118,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "6. Grup (İlkokul / Sınıf Öğretmenleri - B)",
     day: "Pazartesi",
     timeSlot: "16:20 - 17:00",
-    location: "BT Laboratuvarı 2",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -134,7 +134,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "7. Grup (Matematik & Fen Zümresi - B)",
     day: "Salı",
     timeSlot: "16:20 - 17:00",
-    location: "BT Laboratuvarı 1",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -150,7 +150,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "8. Grup (Güzel Sanatlar & Beden Eğitimi & Müzik)",
     day: "Çarşamba",
     timeSlot: "16:20 - 17:00",
-    location: "Çok Amaçlı Salon",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -166,7 +166,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "9. Grup (Rehberlik & Özel Eğitim Zümresi)",
     day: "Perşembe",
     timeSlot: "16:20 - 17:00",
-    location: "Rehberlik Servisi Toplantı Odası",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [
@@ -182,7 +182,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     name: "10. Grup (Bilişim & Mesleki Alan Öğretmenleri)",
     day: "Cuma",
     timeSlot: "15:20 - 16:00",
-    location: "BT Laboratuvarı 1",
+    location: "Maker Atölyesi",
     currentWeek: 1,
     totalWeeks: 8,
     participants: [

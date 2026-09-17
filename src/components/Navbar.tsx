@@ -43,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const navItems = [
     { id: 'overview', label: 'Genel Bakış', icon: Compass },
-    { id: 'groups', label: '10 Eğitim Grubu', icon: Users, badge: '10 Grup' },
+    ...(isAdmin ? [{ id: 'groups', label: '10 Eğitim Grubu', icon: Users, badge: '10 Grup' }] : []),
     { id: 'curriculum', label: 'Haftalık Oturumlar', icon: Calendar, badge: '40 Dk/Hf' },
     { id: 'models', label: 'Dil Modelleri', icon: Cpu },
     { id: 'tools', label: 'Öne Çıkan Araçlar', icon: Wrench },

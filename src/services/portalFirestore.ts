@@ -32,9 +32,24 @@ export function subscribeToGroups(
         onData(initialFallback);
       } else {
         const loadedGroups = snapshot.docs.map((d) => d.data() as TeacherGroup);
+        // Ensure all groups have location "Maker Atölyesi" as requested
+        let needsLocationUpdate = false;
+        const normalizedGroups = loadedGroups.map((g) => {
+          if (g.location !== 'Maker Atölyesi') {
+            needsLocationUpdate = true;
+            return { ...g, location: 'Maker Atölyesi' };
+          }
+          return g;
+        });
         // Sort by groupNumber
-        loadedGroups.sort((a, b) => a.groupNumber - b.groupNumber);
-        onData(loadedGroups);
+        normalizedGroups.sort((a, b) => a.groupNumber - b.groupNumber);
+        onData(normalizedGroups);
+
+        if (needsLocationUpdate) {
+          seedGroups(normalizedGroups).catch((err) => {
+            console.error('Failed to update group locations to Maker Atölyesi in Firestore:', err);
+          });
+        }
       }
     },
     (error) => {
