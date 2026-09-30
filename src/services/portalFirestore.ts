@@ -1,0 +1,229 @@
+import { 
+  collection, 
+  doc, 
+  setDoc, 
+  deleteDoc,
+  onSnapshot, 
+  getDocs, 
+  writeBatch
+} from 'firebase/firestore';
+import { db, handleFirestoreError, OperationType } from '../lib/firebase';
+import { TeacherGroup, WeekSession } from '../types';
+
+const GROUPS_COLLECTION = 'teacher_groups';
+const CURRICULUM_COLLECTION = 'curriculum_weeks';
+
+/**
+ * Real-time listener for Teacher Groups.
+ * If Firestore collection is empty, it automatically seeds it with initial local data so no user data is lost.
+ */
+export function subscribeToGroups(
+  onData: (groups: TeacherGroup[]) => void,
+  initialFallback: TeacherGroup[]
+): () => void {
+  const collRef = collection(db, GROUPS_COLLECTION);
+
+  const unsubscribe = onSnapshot(
+    collRef,
+    async (snapshot) => {
+      if (snapshot.empty) {
+        console.log('Firestore groups empty, seeding initial groups...');
+        await seedGroups(initialFallback);
+        onData(initialFallback);
+      } else {
+        const loadedGroups = snapshot.docs.map((d) => d.data() as TeacherGroup);
+        // Ensure all groups have location "Maker Atölyesi" as requested
+        let needsLocationUpdate = false;
+        const normalizedGroups = loadedGroups.map((g) => {
+          if (g.location !== 'Maker Atölyesi') {
+            needsLocationUpdate = true;
+            return { ...g, location: 'Maker Atölyesi' };
+          }
+          return g;
+        });
+        // Sort by groupNumber
+        normalizedGroups.sort((a, b) => a.groupNumber - b.groupNumber);
+        onData(normalizedGroups);
+
+        if (needsLocationUpdate) {
+          seedGroups(normalizedGroups).catch((err) => {
+            console.error('Failed to update group locations to Maker Atölyesi in Firestore:', err);
+          });
+        }
+      }
+    },
+    (error) => {
+      handleFirestoreError(error, OperationType.LIST, GROUPS_COLLECTION);
+      // Fallback to local
+      onData(initialFallback);
+    }
+  );
+
+  return unsubscribe;
+}
+
+/**
+ * Save or update a single teacher group in Firestore
+ */
+export async function saveGroupToFirestore(group: TeacherGroup): Promise<void> {
+  const docRef = doc(db, GROUPS_COLLECTION, group.id);
+  try {
+    // Ensure plain serializable object without undefined
+    const cleanGroup: TeacherGroup = {
+      ...group,
+      weekDates: group.weekDates || [],
+      notes: group.notes || '',
+    };
+    await setDoc(docRef, cleanGroup, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, `${GROUPS_COLLECTION}/${group.id}`);
+    throw error;
+  }
+}
+
+/**
+ * Seed all groups in batch
+ */
+export async function seedGroups(groups: TeacherGroup[]): Promise<void> {
+  try {
+    const batch = writeBatch(db);
+    groups.forEach((grp) => {
+      const docRef = doc(db, GROUPS_COLLECTION, grp.id);
+      batch.set(docRef, {
+        ...grp,
+        weekDates: grp.weekDates || [],
+        notes: grp.notes || '',
+      });
+    });
+    await batch.commit();
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, GROUPS_COLLECTION);
+  }
+}
+
+/**
+ * Real-time listener for Curriculum Weeks.
+ * If Firestore collection is empty, it automatically seeds it with initial data.
+ */
+export function subscribeToCurriculum(
+  onData: (weeks: WeekSession[]) => void,
+  initialFallback: WeekSession[]
+): () => void {
+  const collRef = collection(db, CURRICULUM_COLLECTION);
+
+  const unsubscribe = onSnapshot(
+    collRef,
+    async (snapshot) => {
+      const hasWeek15 = snapshot.docs.some((d) => d.id === 'hafta-15');
+      const hasConsensus = snapshot.docs.some((d) => (d.data() as any)?.title?.includes('Consensus'));
+      const hasTopic = snapshot.docs.some((d) => Boolean((d.data() as any)?.topic));
+      const hasAppChain = snapshot.docs.some((d) => Boolean((d.data() as any)?.appChain));
+      if (snapshot.empty || snapshot.docs.length < initialFallback.length || !hasWeek15 || !hasConsensus || !hasTopic || !hasAppChain) {
+        console.log('Firestore curriculum empty or outdated, seeding 15-week PDF curriculum with topics and app chains...');
+        await seedCurriculum(initialFallback);
+        onData(initialFallback);
+      } else {
+        const loadedWeeks = snapshot.docs.map((d) => d.data() as WeekSession);
+        // Sort by weekNumber
+        loadedWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
+        onData(loadedWeeks);
+      }
+    },
+    (error) => {
+      handleFirestoreError(error, OperationType.LIST, CURRICULUM_COLLECTION);
+      onData(initialFallback);
+    }
+  );
+
+  return unsubscribe;
+}
+
+function sanitizeWeekData(week: WeekSession): Record<string, any> {
+  const result: Record<string, any> = {
+    id: week.id,
+    weekNumber: week.weekNumber,
+    title: week.title,
+    duration: week.duration || '',
+    category: week.category || 'temel',
+    summary: week.summary || '',
+    topic: week.topic || '',
+    appChain: week.appChain || '',
+    learningOutcomes: week.learningOutcomes || [],
+    sessionFlow: (week.sessionFlow || []).map((sf) => ({
+      minuteRange: sf.minuteRange || '',
+      activity: sf.activity || '',
+      description: sf.description || '',
+    })),
+    keyTools: (week.keyTools || []).map((kt) => ({
+      name: kt.name || '',
+      url: kt.url || '',
+      purpose: kt.purpose || '',
+    })),
+    practicalExercise: week.practicalExercise || '',
+    samplePrompt: week.samplePrompt || '',
+    materials: (week.materials || []).map((m) => ({
+      title: m.title || '',
+      type: m.type || 'belge',
+      url: m.url || '',
+    })),
+    notes: week.notes || '',
+    customAdded: Boolean(week.customAdded),
+    unitName: week.unitName || '',
+    targetOutput: week.targetOutput || '',
+    isWorkshop: Boolean(week.isWorkshop),
+    appCardId: week.appCardId || '',
+  };
+
+  if (week.newToolOfTheWeek) {
+    result.newToolOfTheWeek = {
+      name: week.newToolOfTheWeek.name || '',
+      url: week.newToolOfTheWeek.url || '',
+      tagline: week.newToolOfTheWeek.tagline || ''
+    };
+  }
+
+  return result;
+}
+
+/**
+ * Save or update a single curriculum week in Firestore
+ */
+export async function saveWeekToFirestore(week: WeekSession): Promise<void> {
+  const docRef = doc(db, CURRICULUM_COLLECTION, week.id);
+  try {
+    const cleanWeek = sanitizeWeekData(week);
+    await setDoc(docRef, cleanWeek, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, `${CURRICULUM_COLLECTION}/${week.id}`);
+    throw error;
+  }
+}
+
+/**
+ * Delete a curriculum week from Firestore
+ */
+export async function deleteWeekFromFirestore(weekId: string): Promise<void> {
+  const docRef = doc(db, CURRICULUM_COLLECTION, weekId);
+  try {
+    await deleteDoc(docRef);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, `${CURRICULUM_COLLECTION}/${weekId}`);
+    throw error;
+  }
+}
+
+/**
+ * Seed all curriculum weeks in batch
+ */
+export async function seedCurriculum(weeks: WeekSession[]): Promise<void> {
+  try {
+    const batch = writeBatch(db);
+    weeks.forEach((wk) => {
+      const docRef = doc(db, CURRICULUM_COLLECTION, wk.id);
+      batch.set(docRef, sanitizeWeekData(wk));
+    });
+    await batch.commit();
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, CURRICULUM_COLLECTION);
+  }
+}
