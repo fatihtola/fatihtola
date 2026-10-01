@@ -7,14 +7,53 @@ import {
   Zap, 
   CheckCircle2, 
   AlertTriangle,
-  Lightbulb
+  Lightbulb,
+  Edit3,
+  Trash2,
+  PlusCircle,
+  Lock,
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
-import { LANGUAGE_MODELS, SAMPLE_PROMPT_CATALOG } from '../data/portalData';
+import { LanguageModelItem, PromptTemplate } from '../types';
 import { copyTextToClipboard } from '../utils/clipboard';
+import { EditModelModal } from './EditModelModal';
+import { EditPromptModal } from './EditPromptModal';
 
-export const LanguageModelsSection: React.FC = () => {
+interface LanguageModelsSectionProps {
+  models: LanguageModelItem[];
+  onUpdateModel: (model: LanguageModelItem) => void;
+  onAddModel: (model: LanguageModelItem) => void;
+  onDeleteModel: (modelId: string) => void;
+  prompts: PromptTemplate[];
+  onUpdatePrompt: (prompt: PromptTemplate) => void;
+  onAddPrompt: (prompt: PromptTemplate) => void;
+  onDeletePrompt: (promptId: string) => void;
+  isAdmin: boolean;
+  onOpenAdminLogin: (reason?: string) => void;
+}
+
+export const LanguageModelsSection: React.FC<LanguageModelsSectionProps> = ({
+  models,
+  onUpdateModel,
+  onAddModel,
+  onDeleteModel,
+  prompts,
+  onUpdatePrompt,
+  onAddPrompt,
+  onDeletePrompt,
+  isAdmin,
+  onOpenAdminLogin
+}) => {
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
   const [selectedFormula, setSelectedFormula] = useState<'rgb' | 'rtf' | 'socratic' | 'fewshot'>('rgb');
+  
+  // Modals state
+  const [isModelModalOpen, setIsModelModalOpen] = useState(false);
+  const [editingModel, setEditingModel] = useState<LanguageModelItem | null>(null);
+  const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
+  const [editingPrompt, setEditingPrompt] = useState<PromptTemplate | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const copyText = async (text: string, id: string) => {
     const success = await copyTextToClipboard(text);
@@ -24,19 +63,78 @@ export const LanguageModelsSection: React.FC = () => {
     }
   };
 
+  const handleOpenAddModel = () => {
+    if (!isAdmin) {
+      onOpenAdminLogin('Yeni dil modeli eklemek için lütfen yönetici girişi yapınız.');
+      return;
+    }
+    setEditingModel(null);
+    setIsModelModalOpen(true);
+  };
+
+  const handleOpenEditModel = (model: LanguageModelItem) => {
+    if (!isAdmin) {
+      onOpenAdminLogin('Model içeriğini düzenlemek için lütfen yönetici girişi yapınız.');
+      return;
+    }
+    setEditingModel(model);
+    setIsModelModalOpen(true);
+  };
+
+  const handleOpenAddPrompt = () => {
+    if (!isAdmin) {
+      onOpenAdminLogin('Yeni prompt şablonu eklemek için lütfen yönetici girişi yapınız.');
+      return;
+    }
+    setEditingPrompt(null);
+    setIsPromptModalOpen(true);
+  };
+
+  const handleOpenEditPrompt = (prompt: PromptTemplate) => {
+    if (!isAdmin) {
+      onOpenAdminLogin('Prompt şablonunu düzenlemek için lütfen yönetici girişi yapınız.');
+      return;
+    }
+    setEditingPrompt(prompt);
+    setIsPromptModalOpen(true);
+  };
+
   return (
     <div className="space-y-10" id="language-models-section">
       {/* Header */}
-      <div className="border-b border-slate-800 pb-5">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="w-1.5 h-5 bg-blue-500 rounded-full" />
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-            Dil Modelleri (LLM) ve Öğretmenler İçin İstem Rehberi
-          </h3>
+      <div className="border-b border-slate-800 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <span className="w-1.5 h-5 bg-blue-500 rounded-full" />
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              Dil Modelleri (LLM) ve Öğretmenler İçin İstem Rehberi
+            </h3>
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+              {models.length} Model Listeleniyor
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-400">
+            Eğitimde en güçlü üretken yapay zekâ modellerinin karşılaştırması, bağlam pencereleri ve hatasız istem yazma formülleri.
+          </p>
         </div>
-        <p className="text-xs sm:text-sm text-slate-400">
-          Eğitimde en güçlü üretken yapay zekâ modellerinin karşılaştırması, bağlam pencereleri ve hatasız istem yazma formülleri.
-        </p>
+
+        {/* Action Buttons */}
+        {isAdmin && (
+          <div className="flex items-center gap-2.5 self-start md:self-auto flex-wrap">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs font-semibold text-emerald-300">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Düzenleme Yetkisi Aktif</span>
+            </div>
+
+            <button
+              onClick={handleOpenAddModel}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold shadow-md transition-all active:scale-95 bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Yeni Model Ekle</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* LLM Pedagogical Overview Banner */}
@@ -89,13 +187,16 @@ export const LanguageModelsSection: React.FC = () => {
 
       {/* Language Models Comparison Cards */}
       <div className="space-y-4">
-        <h4 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
-          <span className="w-1.5 h-4 bg-blue-500 rounded-full" />
-          Öne Çıkan Modeller ve Eğitim Özellikleri
-        </h4>
+        <div className="flex items-center justify-between">
+          <h4 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-4 bg-blue-500 rounded-full" />
+            Öne Çıkan Modeller ve Eğitim Özellikleri
+          </h4>
+          <span className="text-xs text-slate-500">{models.length} Model Mevcut</span>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {LANGUAGE_MODELS.map((model) => (
+          {models.map((model) => (
             <div
               key={model.id}
               id={`model-card-${model.id}`}
@@ -103,9 +204,9 @@ export const LanguageModelsSection: React.FC = () => {
             >
               <div>
                 {/* Header */}
-                <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                <div className="flex items-start justify-between gap-2 border-b border-slate-800 pb-3">
                   <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h5 className="text-lg font-bold text-white">{model.name}</h5>
                       {model.badge && (
                         <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
@@ -116,15 +217,58 @@ export const LanguageModelsSection: React.FC = () => {
                     <span className="text-xs text-slate-400">Geliştirici: {model.developer}</span>
                   </div>
 
-                  <a
-                    href={model.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-blue-400 transition-colors"
-                  >
-                    <span>Kullan</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
+                  <div className="flex items-center gap-2">
+                    {isAdmin && (
+                      <>
+                        <button
+                          onClick={() => handleOpenEditModel(model)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700 transition-colors"
+                          title="Modeli Düzenle"
+                        >
+                          <Edit3 className="w-3.5 h-3.5 text-blue-400" />
+                          <span>İçeriği Düzenle</span>
+                        </button>
+
+                        {deleteConfirmId === model.id ? (
+                          <div className="flex items-center gap-1 bg-red-950/70 border border-red-800/60 p-1 rounded-lg text-xs">
+                            <button
+                              onClick={() => {
+                                onDeleteModel(model.id);
+                                setDeleteConfirmId(null);
+                              }}
+                              className="px-2 py-0.5 rounded bg-red-600 text-white font-semibold text-[11px]"
+                            >
+                              Sil
+                            </button>
+                            <button
+                              onClick={() => setDeleteConfirmId(null)}
+                              className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[11px]"
+                            >
+                              İptal
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setDeleteConfirmId(model.id)}
+                            className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 border border-red-900/40 transition-colors"
+                            title="Modeli Sil"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </>
+                    )}
+
+                    <a
+                      href={model.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-xs font-medium text-blue-300 hover:text-white transition-colors"
+                    >
+                      <span>Kullan</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
                 </div>
 
                 {/* Context Window & Best For */}
@@ -135,7 +279,7 @@ export const LanguageModelsSection: React.FC = () => {
                   </div>
                   <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800/80">
                     <span className="text-[10px] text-slate-500 uppercase font-semibold block">Ücretsiz Durumu</span>
-                    <span className="font-medium text-emerald-400">{model.freeTierStatus.split(',')[0]}</span>
+                    <span className="font-medium text-emerald-400 line-clamp-1">{model.freeTierStatus}</span>
                   </div>
                 </div>
 
@@ -314,13 +458,30 @@ export const LanguageModelsSection: React.FC = () => {
 
       {/* READY-TO-USE TEACHER PROMPTS CATALOG */}
       <div className="space-y-4 pt-4">
-        <h4 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-          <span className="w-1.5 h-4 bg-blue-500 rounded-full" />
-          Öğretmenler İçin Hazır Şablonlar (Tek Tıkla Kopyala)
-        </h4>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div>
+            <h4 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-blue-400" />
+              Öğretmenler İçin Hazır Şablonlar (Tek Tıkla Kopyala)
+            </h4>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Ders planı, sınav rubriği, Sokratik koç ve farklılaştırılmış materyal şablonları
+            </p>
+          </div>
+
+          {isAdmin && (
+            <button
+              onClick={handleOpenAddPrompt}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              <span>Yeni Şablon Ekle</span>
+            </button>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {SAMPLE_PROMPT_CATALOG.map((item) => (
+          {prompts.map((item) => (
             <div
               key={item.id}
               id={`sample-prompt-${item.id}`}
@@ -328,13 +489,35 @@ export const LanguageModelsSection: React.FC = () => {
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-xs font-semibold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
-                    {item.branch}
-                  </span>
-                  <span className="text-[11px] text-slate-500 font-mono">
-                    {item.recommendedModel}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                      {item.branch}
+                    </span>
+                    <span className="text-[11px] text-slate-500 font-mono">
+                      {item.recommendedModel}
+                    </span>
+                  </div>
+
+                  {isAdmin && (
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleOpenEditPrompt(item)}
+                        className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition-colors"
+                        title="Şablonu Düzenle"
+                      >
+                        <Edit3 className="w-3 h-3 text-blue-400" />
+                      </button>
+                      <button
+                        onClick={() => onDeletePrompt(item.id)}
+                        className="p-1 rounded-md bg-red-950/40 hover:bg-red-900/50 text-red-400 text-xs border border-red-900/40 transition-colors"
+                        title="Şablonu Sil"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
                 </div>
+
                 <h5 className="text-sm font-bold text-white">{item.title}</h5>
                 <p className="text-xs text-slate-400 mt-0.5">{item.goal}</p>
 
@@ -366,6 +549,34 @@ export const LanguageModelsSection: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Edit Model Modal */}
+      <EditModelModal
+        isOpen={isModelModalOpen}
+        onClose={() => setIsModelModalOpen(false)}
+        onSave={(savedModel) => {
+          if (editingModel) {
+            onUpdateModel(savedModel);
+          } else {
+            onAddModel(savedModel);
+          }
+        }}
+        editingModel={editingModel}
+      />
+
+      {/* Edit Prompt Modal */}
+      <EditPromptModal
+        isOpen={isPromptModalOpen}
+        onClose={() => setIsPromptModalOpen(false)}
+        onSave={(savedPrompt) => {
+          if (editingPrompt) {
+            onUpdatePrompt(savedPrompt);
+          } else {
+            onAddPrompt(savedPrompt);
+          }
+        }}
+        editingPrompt={editingPrompt}
+      />
     </div>
   );
 };

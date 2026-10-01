@@ -4,15 +4,42 @@ import {
   ExternalLink, 
   Copy, 
   Check, 
-  X
+  X,
+  Edit3,
+  Trash2,
+  PlusCircle,
+  Lock,
+  ShieldCheck,
+  DownloadCloud,
+  FileCheck
 } from 'lucide-react';
-import { ADDITIONAL_RESOURCES } from '../data/portalData';
 import { ResourceItem } from '../types';
 import { copyTextToClipboard } from '../utils/clipboard';
+import { EditResourceModal } from './EditResourceModal';
 
-export const ResourcesSection: React.FC = () => {
+interface ResourcesSectionProps {
+  resources: ResourceItem[];
+  onUpdateResource: (resource: ResourceItem) => void;
+  onAddResource: (resource: ResourceItem) => void;
+  onDeleteResource: (resourceId: string) => void;
+  isAdmin: boolean;
+  onOpenAdminLogin: (reason?: string) => void;
+}
+
+export const ResourcesSection: React.FC<ResourcesSectionProps> = ({
+  resources,
+  onUpdateResource,
+  onAddResource,
+  onDeleteResource,
+  isAdmin,
+  onOpenAdminLogin
+}) => {
   const [selectedTemplate, setSelectedTemplate] = useState<{ title: string; content: string } | null>(null);
   const [copiedTemplate, setCopiedTemplate] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [isResourceModalOpen, setIsResourceModalOpen] = useState(false);
+  const [editingResource, setEditingResource] = useState<ResourceItem | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const sample5ETemplate = `# MEB 5E Modeli Yapay Zekâ Destekli Ders Planı Şablonu
 
@@ -54,6 +81,19 @@ export const ResourcesSection: React.FC = () => {
 | **Soru 3** | Grafik okuma ve çıkarım yapma (Değerlendirme) | Grafikteki eksenleri yanlış okumuş. | Verileri doğru okumuş ancak geleceğe yönelik tutarlı çıkarım yapamamış. | Verileri doğru okumuş, eğilimi açıklamış ve mantıksal çıkarımını gerekçelendirmiş. |
 `;
 
+  const categories = [
+    { id: 'all', label: 'Tüm Kaynaklar' },
+    { id: 'Resmi Mevzuat', label: 'Resmi Mevzuat' },
+    { id: 'Etik & Güvenlik', label: 'Etik & Güvenlik' },
+    { id: 'Ders Şablonu', label: 'Ders Şablonu' },
+    { id: 'Prompt Kütüphanesi', label: 'Prompt Kütüphanesi' },
+    { id: 'Teknik Rehber', label: 'Teknik Rehber' }
+  ];
+
+  const filteredResources = resources.filter((res) => {
+    return selectedCategory === 'all' || res.category === selectedCategory;
+  });
+
   const handleOpenTemplate = (type: string) => {
     if (type === '5e') {
       setSelectedTemplate({
@@ -77,36 +117,94 @@ export const ResourcesSection: React.FC = () => {
     }
   };
 
+  const handleOpenAddResource = () => {
+    if (!isAdmin) {
+      onOpenAdminLogin('Yeni kaynak veya şablon eklemek için lütfen yönetici girişi yapınız.');
+      return;
+    }
+    setEditingResource(null);
+    setIsResourceModalOpen(true);
+  };
+
+  const handleOpenEditResource = (resource: ResourceItem) => {
+    if (!isAdmin) {
+      onOpenAdminLogin('Kaynak bilgilerini düzenlemek için lütfen yönetici girişi yapınız.');
+      return;
+    }
+    setEditingResource(resource);
+    setIsResourceModalOpen(true);
+  };
+
   return (
     <div className="space-y-8" id="additional-resources-section">
       {/* Header */}
-      <div className="border-b border-slate-800 pb-5">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="w-1.5 h-5 bg-blue-500 rounded-full" />
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-            Ek Kaynaklar, Mevzuat & İndirilebilir Şablonlar
-          </h3>
+      <div className="border-b border-slate-800 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <span className="w-1.5 h-5 bg-blue-500 rounded-full" />
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              Ek Kaynaklar, Mevzuat & İndirilebilir Şablonlar
+            </h3>
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+              {resources.length} Kaynak
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-400">
+            Eğitimde yapay zekânın yasal, etik ve pedagojik kurallarına ilişkin resmi kılavuzlar ve hazır ders planı şablonları
+          </p>
         </div>
-        <p className="text-xs sm:text-sm text-slate-400">
-          Eğitimde yapay zekânın yasal, etik ve pedagojik kurallarına ilişkin resmi kılavuzlar ve hazır ders planı şablonları
-        </p>
+
+        {/* Action Buttons */}
+        {isAdmin && (
+          <div className="flex items-center gap-2.5 self-start md:self-auto flex-wrap">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs font-semibold text-emerald-300">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Düzenleme Yetkisi Aktif</span>
+            </div>
+
+            <button
+              onClick={handleOpenAddResource}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold shadow-md transition-all active:scale-95 bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Yeni Kaynak Ekle</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Category Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedCategory(cat.id)}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all border ${
+              selectedCategory === cat.id
+                ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/30'
+                : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
 
       {/* Resources Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {ADDITIONAL_RESOURCES.map((resource: ResourceItem) => (
+        {filteredResources.map((resource: ResourceItem) => (
           <div
             key={resource.id}
             id={`resource-card-${resource.id}`}
             className="group flex flex-col justify-between bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-blue-700/60 rounded-2xl p-5 transition-all shadow-sm"
           >
             <div>
-              {/* Category & Org */}
+              {/* Header Row */}
               <div className="flex items-center justify-between gap-2 mb-3">
                 <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
                   {resource.category}
                 </span>
-                <span className="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+                <span className="text-[11px] font-mono text-slate-500 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
                   {resource.fileType}
                 </span>
               </div>
@@ -115,9 +213,8 @@ export const ResourcesSection: React.FC = () => {
               <h4 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors">
                 {resource.title}
               </h4>
-
-              <span className="text-xs text-slate-500 font-medium block mt-1">
-                {resource.organization}
+              <span className="text-[11px] text-slate-400 font-medium block mt-1">
+                Yayımlayan: {resource.organization}
               </span>
 
               {/* Description */}
@@ -126,33 +223,68 @@ export const ResourcesSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Action Link / Trigger */}
-            <div className="mt-5 pt-3.5 border-t border-slate-800/80">
-              {resource.id === 'res-ders-plani-sablonu' ? (
+            {/* Action Buttons Footer */}
+            <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2 mt-4">
+              {isAdmin ? (
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => handleOpenEditResource(resource)}
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700 transition-colors"
+                    title="Kaynağı Düzenle"
+                  >
+                    <Edit3 className="w-3.5 h-3.5 text-blue-400" />
+                    <span>İçeriği Düzenle</span>
+                  </button>
+
+                  {deleteConfirmId === resource.id ? (
+                    <div className="flex items-center gap-1 bg-red-950/70 border border-red-800/60 p-1 rounded-lg text-xs">
+                      <button
+                        onClick={() => {
+                          onDeleteResource(resource.id);
+                          setDeleteConfirmId(null);
+                        }}
+                        className="px-2 py-0.5 rounded bg-red-600 text-white font-semibold text-[10px]"
+                      >
+                        Sil
+                      </button>
+                      <button
+                        onClick={() => setDeleteConfirmId(null)}
+                        className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px]"
+                      >
+                        İptal
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setDeleteConfirmId(resource.id)}
+                      className="p-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 text-red-400 border border-red-900/40 transition-colors"
+                      title="Kaynağı Sil"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div />
+              )}
+
+              {resource.url.startsWith('#') ? (
                 <button
-                  onClick={() => handleOpenTemplate('5e')}
-                  className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white text-xs font-semibold border border-blue-500/30 transition-all"
+                  onClick={() => handleOpenTemplate(resource.url.includes('5e') ? '5e' : 'rubric')}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-xs font-semibold text-blue-300 hover:text-white transition-colors"
                 >
+                  <span>Şablonu Aç</span>
                   <FileText className="w-3.5 h-3.5" />
-                  <span>5E Şablonunu Aç & Kopyala</span>
-                </button>
-              ) : resource.id === 'res-prompt-bankasi' ? (
-                <button
-                  onClick={() => handleOpenTemplate('rubrik')}
-                  className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white text-xs font-semibold border border-blue-500/30 transition-all"
-                >
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>Rubrik Tablosunu Aç & Kopyala</span>
                 </button>
               ) : (
                 <a
                   href={resource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-xs font-semibold text-blue-300 hover:text-white transition-colors"
                 >
                   <span>{resource.linkText}</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               )}
             </div>
@@ -160,57 +292,15 @@ export const ResourcesSection: React.FC = () => {
         ))}
       </div>
 
-      {/* Google AI Studio Guide Card */}
-      <div className="bg-gradient-to-r from-blue-950/40 via-slate-900 to-cyan-950/40 border border-blue-900/50 rounded-2xl p-6 sm:p-7 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">
-              ÖĞRETMENLER İÇİN ÜCRETSİZ ARAÇ
-            </span>
-            <h4 className="text-lg font-bold text-white mt-1.5">
-              Google AI Studio ile Kendi Okul Asistanınızı Ücretsiz Çalıştırma
-            </h4>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-              Google AI Studio, öğretmenlere sıfır kodlama ile System Instructions (Sistem Talimatı) vererek
-              Gemini 2.0 Flash modelleri üzerinden çalışan branşa özel asistan geliştirme imkanı sunar.
-            </p>
-          </div>
-          <a
-            href="https://aistudio.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md transition-all self-start sm:self-auto"
-          >
-            <span>AI Studio'ya Git</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-          <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
-            <span className="text-xs font-bold text-blue-400 block mb-1">1. Adım: Giriş</span>
-            <p className="text-xs text-slate-400">Google hesabınızla aistudio.google.com adresine bağlanın.</p>
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
-            <span className="text-xs font-bold text-indigo-400 block mb-1">2. Adım: Sistem Talimatı</span>
-            <p className="text-xs text-slate-400">"System Instructions" alanına Sokratik öğretmen kuralınızı yapıştırın.</p>
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
-            <span className="text-xs font-bold text-cyan-400 block mb-1">3. Adım: Test & Paylaş</span>
-            <p className="text-xs text-slate-400">Ders kitabı PDF'inizi ekleyin ve branşınıza özel asistanınızı sınıf tahtasında test edin.</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Template Modal */}
+      {/* In-App Interactive Template Preview Modal */}
       {selectedTemplate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="relative w-full max-w-3xl bg-slate-900 border border-slate-700 rounded-2xl p-6 sm:p-7 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h4 className="text-base font-bold text-white flex items-center gap-2">
-                <FileText className="w-4 h-4 text-blue-400" />
-                {selectedTemplate.title}
-              </h4>
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-blue-400" />
+                <h4 className="text-base font-bold text-white">{selectedTemplate.title}</h4>
+              </div>
               <button
                 onClick={() => setSelectedTemplate(null)}
                 className="text-slate-400 hover:text-white p-1 rounded-lg"
@@ -219,32 +309,30 @@ export const ResourcesSection: React.FC = () => {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto">
-              <pre className="text-xs font-mono text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800 whitespace-pre-wrap leading-relaxed">
-                {selectedTemplate.content}
-              </pre>
-            </div>
+            <pre className="flex-1 overflow-y-auto text-xs font-mono text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800 leading-relaxed whitespace-pre-wrap">
+              {selectedTemplate.content}
+            </pre>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-800">
               <button
                 onClick={() => setSelectedTemplate(null)}
-                className="px-4 py-2 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 hover:bg-slate-700"
+                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800"
               >
                 Kapat
               </button>
               <button
                 onClick={copyTemplateContent}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-all"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md active:scale-95"
               >
                 {copiedTemplate ? (
                   <>
-                    <Check className="w-3.5 h-3.5" />
-                    <span>Kopyalandı!</span>
+                    <Check className="w-4 h-4 text-emerald-300" />
+                    <span>Şablon Kopyalandı!</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>Tüm Metni Kopyala</span>
+                    <Copy className="w-4 h-4" />
+                    <span>Şablonu Panoya Kopyala</span>
                   </>
                 )}
               </button>
@@ -252,6 +340,20 @@ export const ResourcesSection: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Edit Resource Modal */}
+      <EditResourceModal
+        isOpen={isResourceModalOpen}
+        onClose={() => setIsResourceModalOpen(false)}
+        onSave={(savedResource) => {
+          if (editingResource) {
+            onUpdateResource(savedResource);
+          } else {
+            onAddResource(savedResource);
+          }
+        }}
+        editingResource={editingResource}
+      />
     </div>
   );
 };

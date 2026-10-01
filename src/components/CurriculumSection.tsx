@@ -519,56 +519,59 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
                           </div>
                         )}
 
-                        <div className="flex items-center gap-2 ml-auto">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEditWeekClick(week);
-                            }}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition-colors"
-                          >
-                            {isAdmin ? <Edit3 className="w-3.5 h-3.5 text-blue-400" /> : <Lock className="w-3.5 h-3.5 text-slate-400" />}
-                            <span>{isAdmin ? 'İçeriği Düzenle' : 'Düzenle (Yönetici)'}</span>
-                          </button>
-                          {week.customAdded && isAdmin && (
-                            deleteConfirmId === week.id ? (
-                              <div className="flex items-center gap-1.5 p-1 rounded-lg bg-red-950/60 border border-red-800/60 text-xs">
-                                <span className="text-[11px] text-red-300 px-1.5 font-medium">Silinsin mi?</span>
+                        {isAdmin && (
+                          <div className="flex items-center gap-2 ml-auto">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditWeekClick(week);
+                              }}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition-colors"
+                              title="Oturumu Düzenle"
+                            >
+                              <Edit3 className="w-3.5 h-3.5 text-blue-400" />
+                              <span>İçeriği Düzenle</span>
+                            </button>
+                            {week.customAdded && (
+                              deleteConfirmId === week.id ? (
+                                <div className="flex items-center gap-1.5 p-1 rounded-lg bg-red-950/60 border border-red-800/60 text-xs">
+                                  <span className="text-[11px] text-red-300 px-1.5 font-medium">Silinsin mi?</span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDeleteConfirmId(null);
+                                      onDeleteWeek(week.id);
+                                    }}
+                                    className="px-2 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white font-semibold text-[11px] transition-colors"
+                                  >
+                                    Evet
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDeleteConfirmId(null);
+                                    }}
+                                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition-colors"
+                                  >
+                                    Vazgeç
+                                  </button>
+                                </div>
+                              ) : (
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    setDeleteConfirmId(null);
-                                    onDeleteWeek(week.id);
+                                    setDeleteConfirmId(week.id);
                                   }}
-                                  className="px-2 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white font-semibold text-[11px] transition-colors"
+                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/40 text-red-300 text-xs font-medium border border-red-800/40 transition-colors"
+                                  title="Oturumu Sil"
                                 >
-                                  Evet
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                  <span>Sil</span>
                                 </button>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setDeleteConfirmId(null);
-                                  }}
-                                  className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition-colors"
-                                >
-                                  Vazgeç
-                                </button>
-                              </div>
-                            ) : (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setDeleteConfirmId(week.id);
-                                }}
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-950/30 hover:bg-red-900/40 text-red-300 text-xs font-medium border border-red-800/40 transition-colors"
-                                title="Oturumu Sil"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                                <span>Sil</span>
-                              </button>
-                            )
-                          )}
-                        </div>
+                              )
+                            )}
+                          </div>
+                        )}
                       </div>
 
                       {/* Haftanın Yeni Aracı Banner */}

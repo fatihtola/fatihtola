@@ -119,6 +119,72 @@
         }
       },
       "required": ["id", "weekNumber", "title"]
+    },
+    "LanguageModel": {
+      "title": "Language Model",
+      "description": "Details of an AI language model (e.g. GPT-4o, Gemini 2.0, Claude 3.7)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "developer": { "type": "string" },
+        "contextWindow": { "type": "string" },
+        "strengths": { "type": "array" },
+        "educationFit": { "type": "string" },
+        "freeTierStatus": { "type": "string" },
+        "url": { "type": "string" },
+        "bestFor": { "type": "string" },
+        "badge": { "type": "string" }
+      },
+      "required": ["id", "name", "developer", "contextWindow", "url"]
+    },
+    "AITool": {
+      "title": "AI Tool",
+      "description": "Educational AI tools catalog item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "educationUseCase": { "type": "string" },
+        "pricing": { "type": "string" },
+        "url": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "tags": { "type": "array" }
+      },
+      "required": ["id", "name", "category", "description", "url"]
+    },
+    "AdditionalResource": {
+      "title": "Additional Resource",
+      "description": "Legal, ethical, or instructional resource or downloadable template",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "organization": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "linkText": { "type": "string" },
+        "url": { "type": "string" },
+        "fileType": { "type": "string" }
+      },
+      "required": ["id", "title", "organization", "category", "url"]
+    },
+    "PromptTemplate": {
+      "title": "Prompt Template",
+      "description": "Pedagogical prompt template for educators",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "branch": { "type": "string" },
+        "gradeLevel": { "type": "string" },
+        "goal": { "type": "string" },
+        "promptText": { "type": "string" },
+        "recommendedModel": { "type": "string" }
+      },
+      "required": ["id", "title", "promptText"]
     }
   },
   "firestore": {
@@ -129,6 +195,22 @@
     "/curriculum_weeks/{weekId}": {
       "schema": "CurriculumWeek",
       "description": "Collection of weekly curriculum modules and course contents"
+    },
+    "/language_models/{modelId}": {
+      "schema": "LanguageModel",
+      "description": "Collection of language models and comparison data"
+    },
+    "/ai_tools/{toolId}": {
+      "schema": "AITool",
+      "description": "Collection of featured AI tools for educators"
+    },
+    "/additional_resources/{resourceId}": {
+      "schema": "AdditionalResource",
+      "description": "Collection of additional resources, official guidelines, and lesson plan templates"
+    },
+    "/prompt_templates/{promptId}": {
+      "schema": "PromptTemplate",
+      "description": "Collection of prompt templates and customizable prompts"
     }
   }
 }

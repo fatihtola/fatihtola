@@ -517,44 +517,49 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
 
                 {/* Day, Time and Room Badges & Edit Button */}
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                  <button
-                    type="button"
-                    onClick={() => handleOpenScheduleEdit(currentGroup)}
-                    title={isAdmin ? "Günü değiştirmek için tıklayın" : "Gün ve saati değiştirmek için yönetici girişi yapınız"}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-blue-500/50 text-xs text-slate-200 transition-all cursor-pointer group"
+                  <div
+                    onClick={isAdmin ? () => handleOpenScheduleEdit(currentGroup) : undefined}
+                    title={isAdmin ? "Günü değiştirmek için tıklayın" : undefined}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 transition-all ${
+                      isAdmin ? "hover:bg-slate-900 hover:border-blue-500/50 cursor-pointer group" : ""
+                    }`}
                   >
-                    <CalendarDays className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                    <CalendarDays className={`w-4 h-4 text-blue-400 ${isAdmin ? "group-hover:scale-110 transition-transform" : ""}`} />
                     <span className="font-semibold">{currentGroup.day}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenScheduleEdit(currentGroup)}
-                    title={isAdmin ? "Saati değiştirmek için tıklayın" : "Gün ve saati değiştirmek için yönetici girişi yapınız"}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 text-xs text-slate-200 transition-all cursor-pointer group"
+                  </div>
+                  <div
+                    onClick={isAdmin ? () => handleOpenScheduleEdit(currentGroup) : undefined}
+                    title={isAdmin ? "Saati değiştirmek için tıklayın" : undefined}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 transition-all ${
+                      isAdmin ? "hover:bg-slate-900 hover:border-indigo-500/50 cursor-pointer group" : ""
+                    }`}
                   >
-                    <Clock className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
+                    <Clock className={`w-4 h-4 text-indigo-400 ${isAdmin ? "group-hover:scale-110 transition-transform" : ""}`} />
                     <span className="font-semibold">{currentGroup.timeSlot}</span>
                     <span className="text-[10px] text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded font-mono font-semibold">40 Dk</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenScheduleEdit(currentGroup)}
-                    title={isAdmin ? "Atölye/konum değiştirmek için tıklayın" : "Konumu değiştirmek için yönetici girişi yapınız"}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 text-xs text-slate-200 transition-all cursor-pointer group"
+                  </div>
+                  <div
+                    onClick={isAdmin ? () => handleOpenScheduleEdit(currentGroup) : undefined}
+                    title={isAdmin ? "Atölye/konum değiştirmek için tıklayın" : undefined}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 transition-all ${
+                      isAdmin ? "hover:bg-slate-900 hover:border-cyan-500/50 cursor-pointer group" : ""
+                    }`}
                   >
-                    <MapPin className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+                    <MapPin className={`w-4 h-4 text-cyan-400 ${isAdmin ? "group-hover:scale-110 transition-transform" : ""}`} />
                     <span>{currentGroup.location}</span>
-                  </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleOpenScheduleEdit(currentGroup)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 hover:border-blue-500 text-blue-300 hover:text-white text-xs font-semibold shadow-sm transition-all active:scale-95"
-                    title="Grup gününü, saatini ve adını dilediğiniz gibi değiştirin"
-                  >
-                    <FileEdit className="w-3.5 h-3.5" />
-                    <span>Günü ve Saati Değiştir</span>
-                  </button>
+                  {isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => handleOpenScheduleEdit(currentGroup)}
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-600/15 hover:bg-blue-600 border border-blue-500/30 hover:border-blue-500 text-blue-300 hover:text-white text-xs font-semibold shadow-sm transition-all active:scale-95"
+                      title="Grup gününü, saatini ve adını dilediğiniz gibi değiştirin"
+                    >
+                      <FileEdit className="w-3.5 h-3.5" />
+                      <span>Günü ve Saati Değiştir</span>
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -565,7 +570,7 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                     Grup Notları & Çalışma Hedefleri
                   </span>
-                  {isAdmin ? (
+                  {isAdmin && (
                     !isEditingNotes ? (
                       <button
                         onClick={startEditNotes}
@@ -583,15 +588,6 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                         <span>Kaydet</span>
                       </button>
                     )
-                  ) : (
-                    <button
-                      onClick={() => onOpenAdminLogin('Grup notlarını düzenlemek için yönetici girişi yapınız.')}
-                      title="Notları düzenlemek için yönetici girişi yapınız"
-                      className="text-[11px] text-slate-500 hover:text-slate-400 flex items-center gap-1"
-                    >
-                      <Lock className="w-3 h-3" />
-                      <span>Düzenleme (Yönetici)</span>
-                    </button>
                   )}
                 </div>
                 {!isEditingNotes ? (
@@ -1088,25 +1084,27 @@ export const GroupsSection: React.FC<GroupsSectionProps> = ({
                           </div>
 
                           <div className="mt-2.5 pt-2 border-t border-slate-900 flex items-center justify-between">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleOpenScheduleEdit(grp);
-                              }}
-                              className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-medium transition-colors"
-                              title="Bu grubun gün ve saatini değiştir"
-                            >
-                              <FileEdit className="w-3 h-3" />
-                              <span>Günü/Saati Değiştir</span>
-                            </button>
+                            {isAdmin && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleOpenScheduleEdit(grp);
+                                }}
+                                className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-medium transition-colors"
+                                title="Bu grubun gün ve saatini değiştir"
+                              >
+                                <FileEdit className="w-3 h-3" />
+                                <span>Günü/Saati Değiştir</span>
+                              </button>
+                            )}
                             <button
                               type="button"
                               onClick={() => {
                                 setSelectedGroupId(grp.id);
                                 setViewMode('details');
                               }}
-                              className="text-[11px] text-slate-400 hover:text-white transition-colors"
+                              className={`text-[11px] text-slate-400 hover:text-white transition-colors ${!isAdmin ? 'w-full text-right' : ''}`}
                             >
                               Detay →
                             </button>

@@ -10,14 +10,41 @@ import { PromptGeneratorSection } from './components/PromptGeneratorSection';
 import { TrainerModal } from './components/TrainerModal';
 import { AddContentModal } from './components/AddContentModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
-import { INITIAL_GROUPS, INITIAL_WEEKS, TRAINER_INFO, FEATURED_AI_TOOLS } from './data/portalData';
-import { TeacherGroup, WeekSession } from './types';
+import { 
+  INITIAL_GROUPS, 
+  INITIAL_WEEKS, 
+  TRAINER_INFO, 
+  FEATURED_AI_TOOLS,
+  LANGUAGE_MODELS,
+  ADDITIONAL_RESOURCES,
+  SAMPLE_PROMPT_CATALOG
+} from './data/portalData';
+import { 
+  TeacherGroup, 
+  WeekSession,
+  LanguageModelItem,
+  AIToolItem,
+  ResourceItem,
+  PromptTemplate
+} from './types';
 import { 
   subscribeToGroups, 
   saveGroupToFirestore, 
   subscribeToCurriculum, 
   saveWeekToFirestore, 
-  deleteWeekFromFirestore 
+  deleteWeekFromFirestore,
+  subscribeToModels,
+  saveModelToFirestore,
+  deleteModelFromFirestore,
+  subscribeToTools,
+  saveToolToFirestore,
+  deleteToolFromFirestore,
+  subscribeToResources,
+  saveResourceToFirestore,
+  deleteResourceFromFirestore,
+  subscribeToPrompts,
+  savePromptToFirestore,
+  deletePromptFromFirestore
 } from './services/portalFirestore';
 import { 
   Sparkles, 
@@ -82,6 +109,46 @@ export default function App() {
     }
   });
 
+  // Language Models state
+  const [models, setModels] = useState<LanguageModelItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('portal_language_models');
+      return saved ? JSON.parse(saved) : LANGUAGE_MODELS;
+    } catch {
+      return LANGUAGE_MODELS;
+    }
+  });
+
+  // AI Tools state
+  const [tools, setTools] = useState<AIToolItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('portal_ai_tools');
+      return saved ? JSON.parse(saved) : FEATURED_AI_TOOLS;
+    } catch {
+      return FEATURED_AI_TOOLS;
+    }
+  });
+
+  // Additional Resources state
+  const [resources, setResources] = useState<ResourceItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('portal_additional_resources');
+      return saved ? JSON.parse(saved) : ADDITIONAL_RESOURCES;
+    } catch {
+      return ADDITIONAL_RESOURCES;
+    }
+  });
+
+  // Prompt Templates state
+  const [prompts, setPrompts] = useState<PromptTemplate[]>(() => {
+    try {
+      const saved = localStorage.getItem('portal_sample_prompts');
+      return saved ? JSON.parse(saved) : SAMPLE_PROMPT_CATALOG;
+    } catch {
+      return SAMPLE_PROMPT_CATALOG;
+    }
+  });
+
   // Real-time Firestore sync for Teacher Groups
   useEffect(() => {
     const unsub = subscribeToGroups((cloudGroups) => {
@@ -103,6 +170,54 @@ export default function App() {
         localStorage.setItem('portal_weekly_curriculum', JSON.stringify(cloudWeeks));
       } catch {}
     }, weeks);
+
+    return () => unsub();
+  }, []);
+
+  // Real-time Firestore sync for Language Models
+  useEffect(() => {
+    const unsub = subscribeToModels((cloudModels) => {
+      setModels(cloudModels);
+      try {
+        localStorage.setItem('portal_language_models', JSON.stringify(cloudModels));
+      } catch {}
+    }, models);
+
+    return () => unsub();
+  }, []);
+
+  // Real-time Firestore sync for AI Tools
+  useEffect(() => {
+    const unsub = subscribeToTools((cloudTools) => {
+      setTools(cloudTools);
+      try {
+        localStorage.setItem('portal_ai_tools', JSON.stringify(cloudTools));
+      } catch {}
+    }, tools);
+
+    return () => unsub();
+  }, []);
+
+  // Real-time Firestore sync for Additional Resources
+  useEffect(() => {
+    const unsub = subscribeToResources((cloudResources) => {
+      setResources(cloudResources);
+      try {
+        localStorage.setItem('portal_additional_resources', JSON.stringify(cloudResources));
+      } catch {}
+    }, resources);
+
+    return () => unsub();
+  }, []);
+
+  // Real-time Firestore sync for Prompt Templates
+  useEffect(() => {
+    const unsub = subscribeToPrompts((cloudPrompts) => {
+      setPrompts(cloudPrompts);
+      try {
+        localStorage.setItem('portal_sample_prompts', JSON.stringify(cloudPrompts));
+      } catch {}
+    }, prompts);
 
     return () => unsub();
   }, []);
@@ -200,12 +315,128 @@ export default function App() {
     setIsAddContentModalOpen(true);
   };
 
+  // Language Models Handlers
+  const handleUpdateModel = (model: LanguageModelItem) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Model içeriğini düzenlemek için yönetici girişi yapınız.');
+      return;
+    }
+    setModels(prev => prev.map(m => m.id === model.id ? model : m));
+    saveModelToFirestore(model).catch(err => console.error('Failed to save model:', err));
+  };
+
+  const handleAddModel = (model: LanguageModelItem) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Yeni model eklemek için yönetici girişi yapınız.');
+      return;
+    }
+    setModels(prev => [model, ...prev]);
+    saveModelToFirestore(model).catch(err => console.error('Failed to save model:', err));
+  };
+
+  const handleDeleteModel = (modelId: string) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Model silmek için yönetici girişi yapınız.');
+      return;
+    }
+    setModels(prev => prev.filter(m => m.id !== modelId));
+    deleteModelFromFirestore(modelId).catch(err => console.error('Failed to delete model:', err));
+  };
+
+  // Tools Handlers
+  const handleUpdateTool = (tool: AIToolItem) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Araç içeriğini düzenlemek için yönetici girişi yapınız.');
+      return;
+    }
+    setTools(prev => prev.map(t => t.id === tool.id ? tool : t));
+    saveToolToFirestore(tool).catch(err => console.error('Failed to save tool:', err));
+  };
+
+  const handleAddTool = (tool: AIToolItem) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Yeni araç eklemek için yönetici girişi yapınız.');
+      return;
+    }
+    setTools(prev => [tool, ...prev]);
+    saveToolToFirestore(tool).catch(err => console.error('Failed to save tool:', err));
+  };
+
+  const handleDeleteTool = (toolId: string) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Araç silmek için yönetici girişi yapınız.');
+      return;
+    }
+    setTools(prev => prev.filter(t => t.id !== toolId));
+    deleteToolFromFirestore(toolId).catch(err => console.error('Failed to delete tool:', err));
+  };
+
+  // Resources Handlers
+  const handleUpdateResource = (res: ResourceItem) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Kaynak içeriğini düzenlemek için yönetici girişi yapınız.');
+      return;
+    }
+    setResources(prev => prev.map(r => r.id === res.id ? res : r));
+    saveResourceToFirestore(res).catch(err => console.error('Failed to save resource:', err));
+  };
+
+  const handleAddResource = (res: ResourceItem) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Yeni kaynak eklemek için yönetici girişi yapınız.');
+      return;
+    }
+    setResources(prev => [res, ...prev]);
+    saveResourceToFirestore(res).catch(err => console.error('Failed to save resource:', err));
+  };
+
+  const handleDeleteResource = (resourceId: string) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Kaynak silmek için yönetici girişi yapınız.');
+      return;
+    }
+    setResources(prev => prev.filter(r => r.id !== resourceId));
+    deleteResourceFromFirestore(resourceId).catch(err => console.error('Failed to delete resource:', err));
+  };
+
+  // Prompts Handlers
+  const handleUpdatePrompt = (prompt: PromptTemplate) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Prompt şablonunu düzenlemek için yönetici girişi yapınız.');
+      return;
+    }
+    setPrompts(prev => prev.map(p => p.id === prompt.id ? prompt : p));
+    savePromptToFirestore(prompt).catch(err => console.error('Failed to save prompt:', err));
+  };
+
+  const handleAddPrompt = (prompt: PromptTemplate) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Yeni prompt şablonu eklemek için yönetici girişi yapınız.');
+      return;
+    }
+    setPrompts(prev => [prompt, ...prev]);
+    savePromptToFirestore(prompt).catch(err => console.error('Failed to save prompt:', err));
+  };
+
+  const handleDeletePrompt = (promptId: string) => {
+    if (!isAdmin) {
+      handleOpenAdminLogin('Prompt şablonu silmek için yönetici girişi yapınız.');
+      return;
+    }
+    setPrompts(prev => prev.filter(p => p.id !== promptId));
+    deletePromptFromFirestore(promptId).catch(err => console.error('Failed to delete prompt:', err));
+  };
+
   const handleExportData = () => {
     try {
       const data = {
         trainer: TRAINER_INFO,
         groups,
         weeks,
+        models,
+        tools,
+        resources,
+        prompts,
         exportDate: new Date().toISOString()
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -228,9 +459,10 @@ export default function App() {
 
   // Global search filtering
   const matchingTools = searchQuery
-    ? FEATURED_AI_TOOLS.filter(t => 
+    ? tools.filter(t => 
         t.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        t.description.toLowerCase().includes(searchQuery.toLowerCase())
+        t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.educationUseCase.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
 
@@ -396,19 +628,51 @@ export default function App() {
             )}
 
             {activeTab === 'models' && (
-              <LanguageModelsSection />
+              <LanguageModelsSection
+                models={models}
+                onUpdateModel={handleUpdateModel}
+                onAddModel={handleAddModel}
+                onDeleteModel={handleDeleteModel}
+                prompts={prompts}
+                onUpdatePrompt={handleUpdatePrompt}
+                onAddPrompt={handleAddPrompt}
+                onDeletePrompt={handleDeletePrompt}
+                isAdmin={isAdmin}
+                onOpenAdminLogin={handleOpenAdminLogin}
+              />
             )}
 
             {activeTab === 'tools' && (
-              <ToolsCatalogSection />
+              <ToolsCatalogSection
+                tools={tools}
+                onUpdateTool={handleUpdateTool}
+                onAddTool={handleAddTool}
+                onDeleteTool={handleDeleteTool}
+                isAdmin={isAdmin}
+                onOpenAdminLogin={handleOpenAdminLogin}
+              />
             )}
 
             {activeTab === 'resources' && (
-              <ResourcesSection />
+              <ResourcesSection
+                resources={resources}
+                onUpdateResource={handleUpdateResource}
+                onAddResource={handleAddResource}
+                onDeleteResource={handleDeleteResource}
+                isAdmin={isAdmin}
+                onOpenAdminLogin={handleOpenAdminLogin}
+              />
             )}
 
             {activeTab === 'generator' && (
-              <PromptGeneratorSection />
+              <PromptGeneratorSection
+                prompts={prompts}
+                onUpdatePrompt={handleUpdatePrompt}
+                onAddPrompt={handleAddPrompt}
+                onDeletePrompt={handleDeletePrompt}
+                isAdmin={isAdmin}
+                onOpenAdminLogin={handleOpenAdminLogin}
+              />
             )}
           </>
         )}

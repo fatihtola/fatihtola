@@ -32,6 +32,32 @@ service cloud.firestore {
              data.title is string && data.title.size() <= 300;
     }
 
+    function isValidLanguageModel(data) {
+      return data.id is string &&
+             data.name is string && data.name.size() <= 200 &&
+             data.developer is string &&
+             data.contextWindow is string;
+    }
+
+    function isValidAITool(data) {
+      return data.id is string &&
+             data.name is string && data.name.size() <= 200 &&
+             data.category is string &&
+             data.url is string;
+    }
+
+    function isValidResource(data) {
+      return data.id is string &&
+             data.title is string && data.title.size() <= 300 &&
+             data.url is string;
+    }
+
+    function isValidPromptTemplate(data) {
+      return data.id is string &&
+             data.title is string && data.title.size() <= 300 &&
+             data.promptText is string;
+    }
+
     // Teacher training groups & attendance collection
     match /teacher_groups/{groupId} {
       allow get, list: if true;
@@ -44,6 +70,34 @@ service cloud.firestore {
       allow get, list: if true;
       allow create, update: if isValidId(weekId) && isValidCurriculumWeek(incoming());
       allow delete: if isValidId(weekId);
+    }
+
+    // Language models collection
+    match /language_models/{modelId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(modelId) && isValidLanguageModel(incoming());
+      allow delete: if isValidId(modelId);
+    }
+
+    // Educational AI tools collection
+    match /ai_tools/{toolId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(toolId) && isValidAITool(incoming());
+      allow delete: if isValidId(toolId);
+    }
+
+    // Additional resources & guidelines collection
+    match /additional_resources/{resourceId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(resourceId) && isValidResource(incoming());
+      allow delete: if isValidId(resourceId);
+    }
+
+    // Prompt templates collection
+    match /prompt_templates/{promptId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(promptId) && isValidPromptTemplate(incoming());
+      allow delete: if isValidId(promptId);
     }
   }
 }
