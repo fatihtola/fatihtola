@@ -98,16 +98,14 @@ export const Navbar: React.FC<NavbarProps> = ({
       label: 'Prompt Üretici', 
       description: 'İnteraktif ders planı, sınav ve görsel istemi oluşturucu',
       icon: Sparkles 
-    },
-    { 
-      id: 'resources', 
-      label: 'Ek Kaynaklar', 
-      description: 'MEB mevzuatları, etik rehberler ve materyaller',
-      icon: FileText 
     }
   ];
 
-  const activeItem = navItems.find((item) => item.id === activeTab) || navItems[0];
+  const activeItem = navItems.find((item) => item.id === activeTab) || (
+    activeTab === 'resources'
+      ? { id: 'resources', label: 'Ek Kaynaklar', description: 'MEB mevzuatları, etik rehberler ve materyaller', icon: FileText }
+      : navItems[0]
+  );
   const ActiveIcon = activeItem ? activeItem.icon : Compass;
 
   const handleAddContentClick = () => {

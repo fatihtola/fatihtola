@@ -698,11 +698,14 @@ export default function App() {
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 sm:gap-4 text-slate-400">
             {isAdmin && (
               <>
                 <button
-                  onClick={() => setActiveTab('groups')}
+                  onClick={() => {
+                    setActiveTab('groups');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                   className="hover:text-blue-400 transition-colors"
                 >
                   10 Grup Programı
@@ -711,29 +714,42 @@ export default function App() {
               </>
             )}
             <button
-              onClick={() => setActiveTab('curriculum')}
+              onClick={() => {
+                setActiveTab('curriculum');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="hover:text-blue-400 transition-colors"
             >
               Haftalık Müfredat
             </button>
             <span>•</span>
             <button
-              onClick={() => setActiveTab('prompts')}
+              onClick={() => {
+                setActiveTab('prompts');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="hover:text-blue-400 transition-colors"
             >
               Prompt Kütüphanesi
             </button>
             <span>•</span>
             <button
-              onClick={() => setActiveTab('generator')}
+              onClick={() => {
+                setActiveTab('generator');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="hover:text-blue-400 transition-colors"
             >
               Prompt Üretici
             </button>
             <span>•</span>
             <button
-              onClick={() => setActiveTab('resources')}
-              className="hover:text-blue-400 transition-colors"
+              id="footer-nav-resources-btn"
+              onClick={() => {
+                setActiveTab('resources');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="hover:text-blue-400 font-medium transition-colors"
             >
               Ek Kaynaklar
             </button>
