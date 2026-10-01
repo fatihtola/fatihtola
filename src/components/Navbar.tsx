@@ -356,7 +356,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop View: Horizontal Menu Tabs */}
-          <div className="hidden md:flex items-center space-x-1 sm:space-x-2 py-1.5 overflow-x-auto no-scrollbar scroll-smooth">
+          <div className="hidden md:flex items-center justify-center space-x-1 sm:space-x-2 py-1.5 overflow-x-auto no-scrollbar scroll-smooth w-full">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
