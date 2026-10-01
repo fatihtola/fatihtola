@@ -115,11 +115,12 @@ export function subscribeToCurriculum(
     collRef,
     async (snapshot) => {
       const hasWeek15 = snapshot.docs.some((d) => d.id === 'hafta-15');
-      const hasConsensus = snapshot.docs.some((d) => (d.data() as any)?.title?.includes('Consensus'));
+      const hasWeek1Brisk = snapshot.docs.some((d) => d.id === 'hafta-1' && (d.data() as any)?.title?.includes('Brisk'));
+      const hasWeek2Consensus = snapshot.docs.some((d) => d.id === 'hafta-2' && (d.data() as any)?.title?.includes('Consensus'));
       const hasTopic = snapshot.docs.some((d) => Boolean((d.data() as any)?.topic));
       const hasAppChain = snapshot.docs.some((d) => Boolean((d.data() as any)?.appChain));
-      if (snapshot.empty || snapshot.docs.length < initialFallback.length || !hasWeek15 || !hasConsensus || !hasTopic || !hasAppChain) {
-        console.log('Firestore curriculum empty or outdated, seeding 15-week PDF curriculum with topics and app chains...');
+      if (snapshot.empty || snapshot.docs.length < initialFallback.length || !hasWeek15 || !hasWeek1Brisk || !hasWeek2Consensus || !hasTopic || !hasAppChain) {
+        console.log('Firestore curriculum outdated or not matching PDF, reseeding 15-week PDF curriculum...');
         await seedCurriculum(initialFallback);
         onData(initialFallback);
       } else {

@@ -68,10 +68,11 @@ export default function App() {
       const saved = localStorage.getItem('portal_weekly_curriculum');
       if (saved) {
         const parsed = JSON.parse(saved);
-        const hasConsensus = parsed.some((w: any) => w.title && w.title.includes('Consensus'));
+        const hasWeek1Brisk = parsed.some((w: any) => w.id === 'hafta-1' && w.title && w.title.includes('Brisk'));
+        const hasWeek2Consensus = parsed.some((w: any) => w.id === 'hafta-2' && w.title && w.title.includes('Consensus'));
         const hasTopic = parsed.some((w: any) => Boolean(w.topic));
         const hasAppChain = parsed.some((w: any) => Boolean(w.appChain));
-        if (Array.isArray(parsed) && parsed.length >= 15 && parsed.some((w: any) => w.id === 'hafta-15') && hasConsensus && hasTopic && hasAppChain) {
+        if (Array.isArray(parsed) && parsed.length >= 15 && parsed.some((w: any) => w.id === 'hafta-15') && hasWeek1Brisk && hasWeek2Consensus && hasTopic && hasAppChain) {
           return parsed;
         }
       }

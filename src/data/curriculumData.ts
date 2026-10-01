@@ -12,36 +12,36 @@ export const CURRICULUM_UNITS: UnitInfo[] = [
   {
     id: "unit-1",
     unitNumber: 1,
-    title: "1. ÜNİTE — ARAŞTIRMA VE MATERYAL ÜRETİMİ",
-    subtitle: "Kaynaktan materyale giden zincir, ders planı, çalışma kâğıdı, idari işler ve sentetik veri analizi.",
-    weekIds: ["hafta-1", "hafta-2"]
+    title: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
+    subtitle: "Öğretmene özel platformlar, kaynaktan materyale giden zincir, ders planı, çalışma kâğıdı, idari işler ve veri.",
+    weekIds: ["hafta-1", "hafta-2", "hafta-3"]
   },
   {
     id: "unit-2",
     unitNumber: 2,
-    title: "2. ÜNİTE — GÖRSEL ÜRETİM VE ÖĞRETMEN PLATFORMLARI",
-    subtitle: "Görsel kodlar, fotoğraftan diyagram/kesit ve öğretmene özel pedagojik yapay zekâ platformları.",
-    weekIds: ["hafta-3", "hafta-4"]
+    title: "2. ÜNİTE — GÖRSEL ÜRETİM",
+    subtitle: "Görsel kodlar: Bir fotoğraftan diyagram ve kesit çıkarma, 200+ görsel kod ile pedagojik şemalar.",
+    weekIds: ["hafta-4"]
   },
   {
     id: "unit-3",
     unitNumber: 3,
     title: "3. ÜNİTE — YAPAY ZEKÂ DESTEKLİ WEB UYGULAMASI",
-    subtitle: "Google AI Studio ile Sokratik öğretmen asistanları geliştirme ve GitHub/Vercel ile canlı yayına alma.",
+    subtitle: "Google AI Studio ile uygulama geliştirme ve GitHub/Vercel ile canlı yayına alma.",
     weekIds: ["hafta-5", "hafta-6"]
   },
   {
     id: "unit-4",
     unitNumber: 4,
     title: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
-    subtitle: "3B tasarım ve baskı, seslendirme, metinden video, üretken video ile kısa film ve VR sanal gezi uygulamaları.",
+    subtitle: "3B tasarım ve baskı, seslendirme, metinden video, üretken video ile kısa film ve VR sanal gezi.",
     weekIds: ["hafta-7", "hafta-8", "hafta-9", "hafta-10", "hafta-11"]
   },
   {
     id: "unit-5",
     unitNumber: 5,
     title: "5. ÜNİTE — KODLAMA, ROBOTİK VE ELEKTRONİK",
-    subtitle: "Etkileşimli mini oyun ve simülasyon, LEGO SPIKE Essential robotik ve Arduino ile devre tasarımı.",
+    subtitle: "Etkileşimli içerik, mini oyun ve simülasyon, LEGO SPIKE Essential ile robotik ve Arduino ile devre tasarımı.",
     weekIds: ["hafta-12", "hafta-13", "hafta-14"]
   },
   {
@@ -72,8 +72,47 @@ export const INITIAL_WEEKS: WeekSession[] = [
   {
     id: "hafta-1",
     weekNumber: 1,
-    unitName: "1. ÜNİTE — ARAŞTIRMA VE MATERYAL ÜRETİMİ",
-    title: "Hafta 1 · Consensus + ChatGPT + NotebookLM: Kaynaktan materyale",
+    unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
+    title: "Hafta 1 · Brisk, Curipod, MagicSchool, Eduaide ve Diffit",
+    topic: "Öğretmene özel platformlar",
+    appChain: "→ Brisk → Curipod → MagicSchool → Eduaide → Diffit → Wayground → Twee",
+    duration: "40 Dakika (1 Ders Saati)",
+    category: "icerik",
+    targetOutput: "Öğretmen asistanlarıyla türetilmiş 1 ünite ders paketi + akıllı tahta Curipod sunumu",
+    summary: "Doğrudan öğretmenler için geliştirilmiş uzman yapay zekâ platformları ekosistemi. Chrome eklentisi Brisk ile internetteki herhangi bir makale veya YouTube videosundan tek tıkla seviyelendirilmiş materyal ve test çıkarma; Curipod ile akıllı tahtada canlı etkileşimli sunum; MagicSchool, Eduaide ve Diffit ile 60+ branş asistanı; Wayground ve Twee ile ders aktiviteleri kurgulama.",
+    learningOutcomes: [
+      "Brisk eklentisi ile web sayfalarını ve YouTube videolarını anında seviyelendirilmiş çalışma fasikülüne dönüştürür.",
+      "Curipod ile öğrencilerin cep telefonu veya tahtadan katıldığı canlı çizim, anket ve açık uçlu etkinlikler hazırlar.",
+      "MagicSchool, Eduaide ve Diffit platformlarının hazır pedagojik şablonlarını kullanarak farklılaştırılmış ders paketleri kurgular."
+    ],
+    sessionFlow: [
+      { minuteRange: "00-08 dk", activity: "Öğretmene Özel Platformların Gücü", description: "Genel yapay zekâ yerine eğitim dikeyindeki platformların sağladığı hazır pedagojik şablonlar." },
+      { minuteRange: "08-18 dk", activity: "Brisk Teaching ile 1 Tıkla Materyal", description: "Bir MEB haberinden veya videodan farklı okuma seviyelerinde quiz ve özet çıkarma." },
+      { minuteRange: "18-28 dk", activity: "Curipod ile Akıllı Tahta İnteraktif Dersi", description: "Öğrencilerin tahtaya çizim gönderdiği, fikir yazdığı canlı interaktif ders destesi üretme." },
+      { minuteRange: "28-40 dk", activity: "MagicSchool, Eduaide, Diffit & Twee", description: "Rubrik, BEP planı, seviyeli okuma kâğıdı ve video aktivitesi maratonu." }
+    ],
+    keyTools: [
+      { name: "Brisk Teaching", url: "https://www.briskteaching.com", purpose: "Tarayıcı eklentisi ile anında farklılaştırılmış materyal çıkarma" },
+      { name: "Curipod", url: "https://curipod.com", purpose: "Canlı öğrenci etkileşimli akıllı tahta sunumları ve anketler" },
+      { name: "MagicSchool.ai", url: "https://magicschool.ai", purpose: "60+ hazır pedagojik öğretmen asistanı" },
+      { name: "Eduaide.Ai", url: "https://www.eduaide.ai", purpose: "Ders planı, ünite tasarımı ve pedagojik oyunlaştırma" },
+      { name: "Diffit", url: "https://web.diffit.me", purpose: "Her konuyu her sınıf seviyesine uygun çalışma kâğıdına dönüştürme" },
+      { name: "Wayground / Twee", url: "https://twee.com", purpose: "YouTube videosundan soru ve ders aktivitesi türetme" }
+    ],
+    practicalExercise: "Brisk veya Diffit kullanarak dersinizin bir konusu için 3 kademeli bir okuma fasikülü üretin; ardından Curipod'da 5 slaytlık interaktif bir akıllı tahta etkinliği oluşturun.",
+    samplePrompt: "Eduaide / MagicSchool İstemi: 'Branş: [Branşınız]. Sınıf Düzeyi: [Sınıf]. Konu: [Konu Başlığı]. Bu konu için öğrencilerin ilgisini çekecek 1 adet gerçek hayat vaka senaryosu, 3 adet basamaklı tartışma sorusu ve 1 adet eğlenceli çıkış bileti (exit ticket) etkinliği hazırla.'",
+    materials: [
+      { title: "Öğretmene Özel Yapay Zekâ Platformları Karşılaştırma Tablosu", type: "belge" },
+      { title: "Brisk Teaching Kurulum ve Kullanım Rehberi", type: "link" },
+      { title: "Diffit ile Farklılaştırılmış Materyal Hazırlama", type: "belge" }
+    ],
+    notes: "Öğretmen platformlarının çoğu ücretsiz öğretmen hesabı (MEB e-posta uzantısıyla) sunmaktadır."
+  },
+  {
+    id: "hafta-2",
+    weekNumber: 2,
+    unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
+    title: "Hafta 2 · Consensus + ChatGPT + NotebookLM: Kaynaktan materyale",
     topic: "Kaynaktan materyale giden zincir",
     appChain: "→ Consensus → ChatGPT/Gemini → NotebookLM → Perplexity",
     duration: "40 Dakika (1 Ders Saati)",
@@ -107,16 +146,16 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "NotebookLM'e yüklenen kaynakların telif ve doğruluk denetimi öğretmen gözetiminde yapılmalıdır."
   },
   {
-    id: "hafta-2",
-    weekNumber: 2,
-    unitName: "1. ÜNİTE — ARAŞTIRMA VE MATERYAL ÜRETİMİ",
-    title: "Hafta 2 · Claude: Ders planı, çalışma kâğıdı, idari işler ve veri",
+    id: "hafta-3",
+    weekNumber: 3,
+    unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
+    title: "Hafta 3 · Claude: Ders planı, çalışma kâğıdı, idari işler ve veri",
     topic: "Ders planı, çalışma kâğıdı, idari işler",
-    appChain: "→ Claude → ChatGPT/Gemini → Excel",
+    appChain: "→ Claude → ChatGPT/Gemini → Diffit → Excel",
     duration: "40 Dakika (1 Ders Saati)",
     category: "temel",
-    targetOutput: "40 dk 5E ders planı + çalışma kâğıdı + sentetik veri not tablosu (Excel formatında)",
-    summary: "Claude'un 200.000 tokenlik devasa bağlam hafızası ve Türkçe dil hakimiyeti ile MEB müfredatına tam uyumlu 5E ders planları kurgulama, farklılaştırılmış çalışma kâğıtları üretme, zümre kararlarını ve idari tabloları düzenleme, sınıfta kullanılmak üzere sentetik öğrenci/deney verisi üretip Excel'e aktarma.",
+    targetOutput: "40 dk 5E ders planı + kademeli çalışma kâğıdı + sentetik veri not tablosu (Excel formatında)",
+    summary: "Claude'un 200.000 tokenlik devasa bağlam hafızası ve üstün Türkçe pedagojik üslubu ile MEB müfredatına tam uyumlu 5E ders planları kurgulama, Diffit ve Claude ile farklılaştırılmış seviyeli çalışma kâğıtları üretme, idari zümre tutanaklarını düzenleme, sınıfta kullanılmak üzere sentetik öğrenci/deney verisi üretip Excel'e aktarma.",
     learningOutcomes: [
       "Claude'un büyük bağlam penceresini kullanarak onlarca sayfalık müfredat dokümanını tek seferde analiz eder ve 5E planı türetir.",
       "Aynı konuyu farklı seviyelerdeki öğrenciler için kademeli çalışma kâğıdına dönüştürür.",
@@ -131,9 +170,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     keyTools: [
       { name: "Claude AI", url: "https://claude.ai", purpose: "200k token bağlam, Artifacts arayüzü ve üstün Türkçe pedagojik üslup" },
       { name: "ChatGPT", url: "https://chatgpt.com", purpose: "Ders planı ve idari tablo biçimlendirme alternatifleri" },
+      { name: "Diffit", url: "https://web.diffit.me", purpose: "Farklılaştırılmış kademeli çalışma kâğıdı şablonları" },
       { name: "Excel / E-Tablolar", url: "https://sheets.google.com", purpose: "Sentetik not listesi ve başarı analizi tablosu" }
     ],
-    practicalExercise: "Önümüzdeki hafta işleyeceğiniz kazanım için Claude ile 40 dakikalık bir 5E ders planı, 1 adet çalışma kâğıdı ve sınıfta analiz ettireceğiniz 15 satırlık sentetik bir veri tablosu oluşturun.",
+    practicalExercise: "Önümüzdeki hafta işleyeceğiniz kazanım için Claude ile 40 dakikalık bir 5E ders planı, Diffit ile 1 adet kademeli çalışma kâğıdı ve sınıfta analiz ettireceğiniz 15 satırlık sentetik bir veri tablosu oluşturun.",
     samplePrompt: "Rol: Kıdemli Öğretim Tasarımcısı ve MEB Müfredat Uzmanı.\nKazanım: [Ders] dersi, [Sınıf] seviyesinde '[Kazanım Kodu/Adı]'.\nGörev:\n1. 40 dakikalık 5E modeli ders planı hazırla (Giriş 5dk, Keşfetme 15dk, Açıklama 10dk, Derinleştirme 7dk, Değerlendirme 3dk).\n2. Bu derste dağıtılacak 1 sayfalık çalışma kâğıdı hazırla.\n3. Öğrencilerin derste grafik çizebilmesi için 15 satırlık gerçekçi bir sentetik veri tablosu oluştur (CSV formatında).",
     materials: [
       { title: "5E Modeli Ders Planı Şablonu (Word)", type: "sablon" },
@@ -142,10 +182,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "İdari dokümanlar işlenirken öğrenci ve öğretmen adlarının gizliliğine dikkat edilmelidir."
   },
   {
-    id: "hafta-3",
-    weekNumber: 3,
-    unitName: "2. ÜNİTE — GÖRSEL ÜRETİM VE ÖĞRETMEN PLATFORMLARI",
-    title: "Hafta 3 · Görsel kodlar: Bir fotoğraftan diyagram ve kesit",
+    id: "hafta-4",
+    weekNumber: 4,
+    unitName: "2. ÜNİTE — GÖRSEL ÜRETİM",
+    title: "Hafta 4 · Görsel kodlar: Bir fotoğraftan diyagram ve kesit",
     topic: "Görsel kodlar",
     appChain: "→ ChatGPT/Gemini Görsel → 200+ Görsel Kod",
     duration: "40 Dakika (1 Ders Saati)",
@@ -175,43 +215,6 @@ export const INITIAL_WEEKS: WeekSession[] = [
       { title: "Diyagram ve Kesit Tasarımı İpuçları", type: "belge" }
     ],
     notes: "Diyagramlarda numara ve işaretçilerin net çıkması için açık renkli ve sade arka plan tercih edilmelidir."
-  },
-  {
-    id: "hafta-4",
-    weekNumber: 4,
-    unitName: "2. ÜNİTE — GÖRSEL ÜRETİM VE ÖĞRETMEN PLATFORMLARI",
-    title: "Hafta 4 · Brisk, Curipod, MagicSchool ve Eduaide",
-    topic: "Öğretmene özel platformlar",
-    appChain: "→ Brisk → Curipod → MagicSchool → Eduaide → Wayground → Twee",
-    duration: "40 Dakika (1 Ders Saati)",
-    category: "icerik",
-    targetOutput: "Öğretmen asistanlarıyla türetilmiş 1 ünite ders paketi + akıllı tahta Curipod sunumu",
-    summary: "Doğrudan öğretmenler için geliştirilmiş uzman yapay zekâ platformları ekosistemi. Chrome eklentisi Brisk ile internetteki herhangi bir makale veya YouTube videosundan tek tıkla seviyelendirilmiş materyal ve test çıkarma; Curipod ile akıllı tahtada canlı etkileşimli sunum; MagicSchool ve Eduaide ile 60+ branş asistanı; Wayground ve Twee ile ders aktiviteleri kurgulama.",
-    learningOutcomes: [
-      "Brisk eklentisi ile web sayfalarını ve YouTube videolarını anında seviyelendirilmiş çalışma fasikülüne dönüştürür.",
-      "Curipod ile öğrencilerin cep telefonu veya tahtadan katıldığı canlı çizim, anket ve açık uçlu etkinlikler hazırlar.",
-      "MagicSchool, Eduaide, Wayground ve Twee platformlarının güçlü yönlerini ders hazırlık rutinlerine entegre eder."
-    ],
-    sessionFlow: [
-      { minuteRange: "00-08 dk", activity: "Öğretmene Özel Platformların Gücü", description: "Genel yapay zekâ yerine eğitim dikeyindeki platformların sağladığı hazır pedagojik şablonlar." },
-      { minuteRange: "08-18 dk", activity: "Brisk Teaching ile 1 Tıkla Materyal", description: "Bir MEB haberinden veya videodan farklı okuma seviyelerinde quiz ve özet çıkarma." },
-      { minuteRange: "18-28 dk", activity: "Curipod ile Akıllı Tahta İnteraktif Dersi", description: "Öğrencilerin tahtaya çizim gönderdiği, fikir yazdığı canlı interaktif ders destesi üretme." },
-      { minuteRange: "28-40 dk", activity: "MagicSchool, Eduaide, Wayground & Twee", description: "Rubrik, BEP planı, kelime oyunu ve dinleme etkinliği türetme maratonu." }
-    ],
-    keyTools: [
-      { name: "Brisk Teaching", url: "https://www.briskteaching.com", purpose: "Tarayıcı eklentisi ile anında farklılaştırılmış materyal çıkarma" },
-      { name: "Curipod", url: "https://curipod.com", purpose: "Canlı öğrenci etkileşimli akıllı tahta sunumları ve anketler" },
-      { name: "MagicSchool.ai", url: "https://magicschool.ai", purpose: "60+ hazır pedagojik öğretmen asistanı" },
-      { name: "Eduaide.Ai", url: "https://www.eduaide.ai", purpose: "Ders planı, ünite tasarımı ve pedagojik oyunlaştırma" },
-      { name: "Wayground / Twee", url: "https://twee.com", purpose: "YouTube videosundan soru ve ders aktivitesi türetme" }
-    ],
-    practicalExercise: "Brisk veya MagicSchool kullanarak dersinizin bir konusu için 3 kademeli bir okuma fasikülü üretin; ardından Curipod'da 5 slaytlık interaktif bir akıllı tahta etkinliği oluşturun.",
-    samplePrompt: "Eduaide / MagicSchool İstemi: 'Branş: [Branşınız]. Sınıf Düzeyi: [Sınıf]. Konu: [Konu Başlığı]. Bu konu için öğrencilerin ilgisini çekecek 1 adet gerçek hayat vaka senaryosu, 3 adet basamaklı tartışma sorusu ve 1 adet eğlenceli çıkış bileti (exit ticket) etkinliği hazırla.'",
-    materials: [
-      { title: "Öğretmene Özel Yapay Zekâ Platformları Karşılaştırma Tablosu", type: "belge" },
-      { title: "Brisk Teaching Kurulum ve Kullanım Rehberi", type: "link" }
-    ],
-    notes: "Öğretmen platformlarının çoğu ücretsiz öğretmen hesabı (MEB e-posta uzantısıyla) sunmaktadır."
   },
   {
     id: "hafta-5",
@@ -604,7 +607,7 @@ export const INITIAL_WEEKS: WeekSession[] = [
       { name: "Mapify", url: "https://mapify.so", purpose: "Her türlü içerikten tek tıkla yapay zekâlı zihin haritası üretimi" }
     ],
     practicalExercise: "15 haftalık eğitim sürecinde geliştirdiğiniz en başarılı çalışmayı Gamma ve Napkin ile 5 slaytlık bir portfolyo sunumuna dönüştürün ve okul arşivine ekleyin.",
-    samplePrompt: "Gamma Sunum İstemi: 'Konu: [Branşınız] Yapay Zekâ ve Eğitim Teknolojileri Dönem Portfolyosu.\nHedef Kitle: Okul öğretmenleri ve zümre arkadaşları.\nİçerik:\n1. Başlık ve Giriş\n2. 5E Ders Planı ve Diferansiye Materyaller (Hafta 1-4)\n3. 3B Tasarım ve Multimodal Üretimler (Hafta 5-11)\n4. Kodlama, Robotik ve Web Uygulaması (Hafta 12-14)\n5. Sınıf İçi Başarı Çıktıları ve Öneriler\nFormat: 5 slaytlık modern ve canlı bir Gamma sunumu taslağı hazırla.'",
+    samplePrompt: "Gamma Sunum İstemi: 'Konu: [Branşınız] Yapay Zekâ ve Eğitim Teknolojileri Dönem Portfolyosu.\nHedef Kitle: Okul öğretmenleri ve zümre arkadaşları.\nİçerik:\n1. Başlık ve Giriş\n2. Materyal Üretimi: Platformlar ve Kaynaklı Üretim (Hafta 1-3)\n3. Görsel Üretim & AI Web Uygulaması (Hafta 4-6)\n4. Tasarım, Ses, Görüntü ve VR (Hafta 7-11)\n5. Kodlama, Robotik ve Elektronik (Hafta 12-14)\n6. Süreç Değerlendirmesi ve Kapanış\nFormat: 6 slaytlık modern ve canlı bir Gamma sunumu taslağı hazırla.'",
     materials: [
       { title: "Okulumuz Öğretmen Akademisi Katılım Belgesi", type: "belge" },
       { title: "Napkin.ai Hızlı İnfografik Rehberi", type: "link" }

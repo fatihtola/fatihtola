@@ -103,7 +103,7 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-400">
-            2026-2027 Eğitim Teknolojileri Programı: Araştırma, Materyal, Ses & Video, Robotik, AI Web ve Sunum üniteleri.
+            15 Haftalık Eğitim Teknolojileri Programı · 2026–2027 (İçindekiler & Hafta Hafta Uygulamalar)
           </p>
         </div>
 
@@ -241,7 +241,7 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
                   : 'bg-slate-900/70 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
               }`}
             >
-              {unit.unitNumber}. Ünite
+              {unit.unitNumber}. Ünite · {unit.title.split('—')[1]?.trim() || unit.title}
             </button>
           ))}
         </div>
@@ -270,15 +270,66 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
               <thead>
                 <tr className="border-b border-slate-800 bg-slate-950/80 text-slate-400 font-semibold uppercase tracking-wider">
                   <th className="py-3.5 px-4 w-16">Hafta</th>
-                  <th className="py-3.5 px-4 min-w-[140px]">Ünite</th>
-                  <th className="py-3.5 px-4 min-w-[180px]">Konu</th>
-                  <th className="py-3.5 px-4 min-w-[240px]">Uygulamalar Zinciri</th>
-                  <th className="py-3.5 px-4 min-w-[220px]">Hedef Çıktı</th>
-                  <th className="py-3.5 px-4 w-28 text-center">Tür</th>
-                  <th className="py-3.5 px-4 w-20 text-center">İncele</th>
+                  <th className="py-3.5 px-4 min-w-[200px]">Ders Planındaki Başlık</th>
+                  <th className="py-3.5 px-4 min-w-[160px]">Konu</th>
+                  <th className="py-3.5 px-4 min-w-[240px]">→ Kullanılacak Uygulamalar</th>
+                  <th className="py-3.5 px-4 min-w-[160px]">Ünite</th>
+                  <th className="py-3.5 px-4 min-w-[200px]">Hedef Çıktı</th>
+                  <th className="py-3.5 px-4 w-24 text-center">Tür</th>
+                  <th className="py-3.5 px-4 w-16 text-center">İncele</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                {/* Hazırlık Oturumu (0. Hafta) Row */}
+                {(selectedUnit === 'all' || selectedUnit === 'unit-1') && (
+                  <tr 
+                    className="bg-indigo-950/20 hover:bg-indigo-950/40 transition-colors cursor-pointer"
+                    onClick={() => setShowPrepSession(true)}
+                  >
+                    <td className="py-3.5 px-4">
+                      <span className="font-extrabold text-indigo-400 font-mono bg-indigo-500/15 px-2 py-1 rounded border border-indigo-500/30">
+                        H.0
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 font-bold text-white">
+                      {HAZIRLIK_OTURUMU.title}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="font-semibold text-indigo-300 bg-indigo-950/50 px-2 py-0.5 rounded border border-indigo-900/40">
+                        {HAZIRLIK_OTURUMU.topic}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="text-[11px] font-mono text-indigo-300 bg-indigo-950/60 px-2 py-1 rounded border border-indigo-900/40 inline-block">
+                        {HAZIRLIK_OTURUMU.appChain}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-slate-400 text-[11px]">
+                      Hazırlık (İsteğe Bağlı)
+                    </td>
+                    <td className="py-3.5 px-4 text-slate-300 text-[11px]">
+                      RGBF formülü + Hızlı sesli istem (Win+H)
+                    </td>
+                    <td className="py-3.5 px-4 text-center">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                        Hazırlık
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-center">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowPrepSession(prev => !prev);
+                        }}
+                        className="p-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white transition-colors"
+                        title="Hazırlık Oturumunu İncele"
+                      >
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </td>
+                  </tr>
+                )}
+
                 {filteredWeeks.map((week) => (
                   <tr 
                     key={week.id} 
@@ -294,21 +345,26 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
                       </span>
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="text-[11px] font-medium text-slate-300 line-clamp-1">
-                        {week.unitName?.replace(' — ', '\n')}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4">
                       <div className="font-bold text-white group-hover:text-blue-300 transition-colors">
-                        {week.topic || week.title}
-                      </div>
-                      <div className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
                         {week.title}
                       </div>
+                      <div className="text-[11px] text-slate-400 line-clamp-1 mt-0.5 font-light">
+                        {week.summary}
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="font-semibold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                        {week.topic || '—'}
+                      </span>
                     </td>
                     <td className="py-3.5 px-4">
                       <span className="text-[11px] font-mono text-indigo-300 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40 inline-block">
                         {week.appChain || '—'}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="text-[11px] font-medium text-slate-300">
+                        {week.unitName}
                       </span>
                     </td>
                     <td className="py-3.5 px-4">
