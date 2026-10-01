@@ -7,6 +7,7 @@ import { LanguageModelsSection } from './components/LanguageModelsSection';
 import { ToolsCatalogSection } from './components/ToolsCatalogSection';
 import { ResourcesSection } from './components/ResourcesSection';
 import { PromptGeneratorSection } from './components/PromptGeneratorSection';
+import { PromptLibrarySection } from './components/PromptLibrarySection';
 import { TrainerModal } from './components/TrainerModal';
 import { AddContentModal } from './components/AddContentModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
@@ -633,10 +634,6 @@ export default function App() {
                 onUpdateModel={handleUpdateModel}
                 onAddModel={handleAddModel}
                 onDeleteModel={handleDeleteModel}
-                prompts={prompts}
-                onUpdatePrompt={handleUpdatePrompt}
-                onAddPrompt={handleAddPrompt}
-                onDeletePrompt={handleDeletePrompt}
                 isAdmin={isAdmin}
                 onOpenAdminLogin={handleOpenAdminLogin}
               />
@@ -664,12 +661,23 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'generator' && (
-              <PromptGeneratorSection
+            {activeTab === 'prompts' && (
+              <PromptLibrarySection
                 prompts={prompts}
                 onUpdatePrompt={handleUpdatePrompt}
                 onAddPrompt={handleAddPrompt}
                 onDeletePrompt={handleDeletePrompt}
+                isAdmin={isAdmin}
+                onOpenAdminLogin={handleOpenAdminLogin}
+                onNavigateToGenerator={() => {
+                  setActiveTab('generator');
+                }}
+              />
+            )}
+
+            {activeTab === 'generator' && (
+              <PromptGeneratorSection
+                onAddPrompt={handleAddPrompt}
                 isAdmin={isAdmin}
                 onOpenAdminLogin={handleOpenAdminLogin}
               />
@@ -707,6 +715,20 @@ export default function App() {
               className="hover:text-blue-400 transition-colors"
             >
               Haftalık Müfredat
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => setActiveTab('prompts')}
+              className="hover:text-blue-400 transition-colors"
+            >
+              Prompt Kütüphanesi
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => setActiveTab('generator')}
+              className="hover:text-blue-400 transition-colors"
+            >
+              Prompt Üretici
             </button>
             <span>•</span>
             <button

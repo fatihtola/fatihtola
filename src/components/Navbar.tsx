@@ -19,7 +19,8 @@ import {
   X,
   ChevronRight,
   ChevronDown,
-  Check
+  Check,
+  BookOpen
 } from 'lucide-react';
 import { TRAINER_INFO } from '../data/portalData';
 
@@ -87,16 +88,22 @@ export const Navbar: React.FC<NavbarProps> = ({
       icon: Wrench 
     },
     { 
-      id: 'resources', 
-      label: 'Ek Kaynaklar', 
-      description: 'MEB mevzuatları, etik rehberler ve materyaller',
-      icon: FileText 
+      id: 'prompts', 
+      label: 'Prompt Kütüphanesi', 
+      description: 'İstem formülleri ve branş bazlı hazır şablonlar',
+      icon: BookOpen 
     },
     { 
       id: 'generator', 
       label: 'Prompt Üretici', 
-      description: 'Ders planı, sınav ve görsel istemi oluşturucu',
+      description: 'İnteraktif ders planı, sınav ve görsel istemi oluşturucu',
       icon: Sparkles 
+    },
+    { 
+      id: 'resources', 
+      label: 'Ek Kaynaklar', 
+      description: 'MEB mevzuatları, etik rehberler ve materyaller',
+      icon: FileText 
     }
   ];
 
