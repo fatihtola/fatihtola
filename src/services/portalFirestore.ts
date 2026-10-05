@@ -125,13 +125,14 @@ export function subscribeToCurriculum(
   const unsubscribe = onSnapshot(
     collRef,
     async (snapshot) => {
-      const hasWeek15 = snapshot.docs.some((d) => d.id === 'hafta-15');
-      const hasWeek1Brisk = snapshot.docs.some((d) => d.id === 'hafta-1' && (d.data() as any)?.title?.includes('Brisk'));
-      const hasWeek2Consensus = snapshot.docs.some((d) => d.id === 'hafta-2' && (d.data() as any)?.title?.includes('Consensus'));
+      const hasWeek16 = snapshot.docs.some((d) => d.id === 'hafta-16');
+      const hasWeek1Brisk = snapshot.docs.some((d) => d.id === 'hafta-1' && (d.data() as any)?.title?.includes('Brisk Teaching'));
+      const hasWeek2Magic = snapshot.docs.some((d) => d.id === 'hafta-2' && (d.data() as any)?.title?.includes('MagicSchool'));
+      const hasWeek3Consensus = snapshot.docs.some((d) => d.id === 'hafta-3' && (d.data() as any)?.title?.includes('Consensus'));
       const hasTopic = snapshot.docs.some((d) => Boolean((d.data() as any)?.topic));
       const hasAppChain = snapshot.docs.some((d) => Boolean((d.data() as any)?.appChain));
-      if (snapshot.empty || snapshot.docs.length < initialFallback.length || !hasWeek15 || !hasWeek1Brisk || !hasWeek2Consensus || !hasTopic || !hasAppChain) {
-        console.log('Firestore curriculum outdated or not matching PDF, reseeding 15-week PDF curriculum...');
+      if (snapshot.empty || snapshot.docs.length < 16 || !hasWeek16 || !hasWeek1Brisk || !hasWeek2Magic || !hasWeek3Consensus || !hasTopic || !hasAppChain) {
+        console.log('Firestore curriculum outdated or not matching 16-week PDF, reseeding 16-week PDF curriculum...');
         await seedCurriculum(initialFallback);
         onData(initialFallback);
       } else {

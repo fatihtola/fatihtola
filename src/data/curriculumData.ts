@@ -14,42 +14,42 @@ export const CURRICULUM_UNITS: UnitInfo[] = [
     unitNumber: 1,
     title: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
     subtitle: "Öğretmene özel platformlar, kaynaktan materyale giden zincir, ders planı, çalışma kâğıdı, idari işler ve veri.",
-    weekIds: ["hafta-1", "hafta-2", "hafta-3"]
+    weekIds: ["hafta-1", "hafta-2", "hafta-3", "hafta-4"]
   },
   {
     id: "unit-2",
     unitNumber: 2,
     title: "2. ÜNİTE — GÖRSEL ÜRETİM",
     subtitle: "Görsel kodlar: Bir fotoğraftan diyagram ve kesit çıkarma, 200+ görsel kod ile pedagojik şemalar.",
-    weekIds: ["hafta-4"]
+    weekIds: ["hafta-5"]
   },
   {
     id: "unit-3",
     unitNumber: 3,
     title: "3. ÜNİTE — YAPAY ZEKÂ DESTEKLİ WEB UYGULAMASI",
     subtitle: "Google AI Studio ile uygulama geliştirme ve GitHub/Vercel ile canlı yayına alma.",
-    weekIds: ["hafta-5", "hafta-6"]
+    weekIds: ["hafta-6", "hafta-7"]
   },
   {
     id: "unit-4",
     unitNumber: 4,
     title: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
     subtitle: "3B tasarım ve baskı, seslendirme, metinden video, üretken video ile kısa film ve VR sanal gezi.",
-    weekIds: ["hafta-7", "hafta-8", "hafta-9", "hafta-10", "hafta-11"]
+    weekIds: ["hafta-8", "hafta-9", "hafta-10", "hafta-11", "hafta-12"]
   },
   {
     id: "unit-5",
     unitNumber: 5,
     title: "5. ÜNİTE — KODLAMA, ROBOTİK VE ELEKTRONİK",
     subtitle: "Etkileşimli içerik, mini oyun ve simülasyon, LEGO SPIKE Essential ile robotik ve Arduino ile devre tasarımı.",
-    weekIds: ["hafta-12", "hafta-13", "hafta-14"]
+    weekIds: ["hafta-13", "hafta-14", "hafta-15"]
   },
   {
     id: "unit-6",
     unitNumber: 6,
     title: "6. ÜNİTE — SUNUM VE GÖRSELLEŞTİRME",
     subtitle: "Gamma, Napkin ve Jeda ile sunum, süreç görselleştirme, dönem sonu portfolyo ve kapanış.",
-    weekIds: ["hafta-15"]
+    weekIds: ["hafta-16"]
   }
 ];
 
@@ -73,46 +73,82 @@ export const INITIAL_WEEKS: WeekSession[] = [
     id: "hafta-1",
     weekNumber: 1,
     unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
-    title: "Hafta 1 · Brisk, Curipod, MagicSchool, Eduaide ve Diffit",
+    title: "Hafta 1 · Brisk Teaching: Çalıştığınız yerden çıkmadan yapay zekâ",
     topic: "Öğretmene özel platformlar",
-    appChain: "→ Brisk → Curipod → MagicSchool → Eduaide → Diffit → Wayground → Twee",
+    appChain: "→ Brisk Teaching → Google Dokümanlar/Slaytlar → Quiz → Wayground/Kahoot → YouTube",
     duration: "40 Dakika (1 Ders Saati)",
     category: "icerik",
-    targetOutput: "Öğretmen asistanlarıyla türetilmiş 1 ünite ders paketi + akıllı tahta Curipod sunumu",
-    summary: "Doğrudan öğretmenler için geliştirilmiş uzman yapay zekâ platformları ekosistemi. Chrome eklentisi Brisk ile internetteki herhangi bir makale veya YouTube videosundan tek tıkla seviyelendirilmiş materyal ve test çıkarma; Curipod ile akıllı tahtada canlı etkileşimli sunum; MagicSchool, Eduaide ve Diffit ile 60+ branş asistanı; Wayground ve Twee ile ders aktiviteleri kurgulama.",
+    targetOutput: "Web makalesinden/YouTube videosundan seviyelendirilmiş çalışma fasikülü + anlık quiz",
+    summary: "Chrome eklentisi Brisk Teaching ile internetteki herhangi bir makale veya YouTube videosundan çalıştığınız ortamdan çıkmadan tek tıkla seviyelendirilmiş ders materyali, çalışma fasikülü ve sınav/quiz çıkarma; Google Dokümanlar ve Slaytlar entegrasyonu; Wayground ve Kahoot ile anlık sınıf içi değerlendirme etkinlikleri kurgulama.",
     learningOutcomes: [
-      "Brisk eklentisi ile web sayfalarını ve YouTube videolarını anında seviyelendirilmiş çalışma fasikülüne dönüştürür.",
-      "Curipod ile öğrencilerin cep telefonu veya tahtadan katıldığı canlı çizim, anket ve açık uçlu etkinlikler hazırlar.",
-      "MagicSchool, Eduaide ve Diffit platformlarının hazır pedagojik şablonlarını kullanarak farklılaştırılmış ders paketleri kurgular."
+      "Brisk eklentisi ile web sayfalarını ve YouTube videolarını çalıştığı ekrandan ayrılmadan anında seviyelendirilmiş çalışma fasikülüne dönüştürür.",
+      "Brisk çıktılarının tek tıkla Google Dokümanlar ve Google Slaytlar'a aktarımını ve biçimlendirmesini yapar.",
+      "Oluşturulan değerlendirme sorularını ve quizleri Wayground ve Kahoot platformlarına aktararak anlık sınıf yarışmalarına dönüştürür."
     ],
     sessionFlow: [
-      { minuteRange: "00-08 dk", activity: "Öğretmene Özel Platformların Gücü", description: "Genel yapay zekâ yerine eğitim dikeyindeki platformların sağladığı hazır pedagojik şablonlar." },
-      { minuteRange: "08-18 dk", activity: "Brisk Teaching ile 1 Tıkla Materyal", description: "Bir MEB haberinden veya videodan farklı okuma seviyelerinde quiz ve özet çıkarma." },
-      { minuteRange: "18-28 dk", activity: "Curipod ile Akıllı Tahta İnteraktif Dersi", description: "Öğrencilerin tahtaya çizim gönderdiği, fikir yazdığı canlı interaktif ders destesi üretme." },
-      { minuteRange: "28-40 dk", activity: "MagicSchool, Eduaide, Diffit & Twee", description: "Rubrik, BEP planı, seviyeli okuma kâğıdı ve video aktivitesi maratonu." }
+      { minuteRange: "00-08 dk", activity: "Brisk Teaching Kurulum & Chrome Entegrasyonu", description: "Öğretmen hesabıyla kurulum, tarayıcıda hazır bekleme ve arayüz mantığı." },
+      { minuteRange: "08-20 dk", activity: "Web Sayfasından ve YouTube'dan 1 Tıkla Materyal", description: "Herhangi bir eğitim makalesi veya YouTube videosundan seviyeli okuma metni ve quiz çıkarma." },
+      { minuteRange: "20-30 dk", activity: "Google Dokümanlar ve Slaytlar Aktarımı", description: "Üretilen çalışma fasikülünün Google Docs/Slides ortamında anında düzenlenmesi." },
+      { minuteRange: "30-40 dk", activity: "Wayground & Kahoot ile Oyunlaştırma", description: "Quiz çıktılarının Wayground ve Kahoot'a aktarılarak sınıf içi yarışmaya dönüştürülmesi." }
     ],
     keyTools: [
-      { name: "Brisk Teaching", url: "https://www.briskteaching.com", purpose: "Tarayıcı eklentisi ile anında farklılaştırılmış materyal çıkarma" },
-      { name: "Curipod", url: "https://curipod.com", purpose: "Canlı öğrenci etkileşimli akıllı tahta sunumları ve anketler" },
-      { name: "MagicSchool.ai", url: "https://magicschool.ai", purpose: "60+ hazır pedagojik öğretmen asistanı" },
-      { name: "Eduaide.Ai", url: "https://www.eduaide.ai", purpose: "Ders planı, ünite tasarımı ve pedagojik oyunlaştırma" },
-      { name: "Diffit", url: "https://web.diffit.me", purpose: "Her konuyu her sınıf seviyesine uygun çalışma kâğıdına dönüştürme" },
-      { name: "Wayground / Twee", url: "https://twee.com", purpose: "YouTube videosundan soru ve ders aktivitesi türetme" }
+      { name: "Brisk Teaching", url: "https://www.briskteaching.com", purpose: "Tarayıcı eklentisi ile çalıştığınız yerden çıkmadan anında seviyelendirilmiş materyal çıkarma" },
+      { name: "Google Dokümanlar/Slaytlar", url: "https://docs.google.com", purpose: "Brisk çıktılarının tek tıkla düzenlendiği çalışma kâğıdı ve sunum ortamı" },
+      { name: "Wayground / Kahoot", url: "https://kahoot.com", purpose: "Quiz çıktılarının oyunlaştırılmış sınıf yarışmasına dönüştürülmesi" },
+      { name: "YouTube", url: "https://youtube.com", purpose: "Eğitim videolarından saniyeler içinde soru ve seviyeli özet çıkarma" }
     ],
-    practicalExercise: "Brisk veya Diffit kullanarak dersinizin bir konusu için 3 kademeli bir okuma fasikülü üretin; ardından Curipod'da 5 slaytlık interaktif bir akıllı tahta etkinliği oluşturun.",
-    samplePrompt: "Eduaide / MagicSchool İstemi: 'Branş: [Branşınız]. Sınıf Düzeyi: [Sınıf]. Konu: [Konu Başlığı]. Bu konu için öğrencilerin ilgisini çekecek 1 adet gerçek hayat vaka senaryosu, 3 adet basamaklı tartışma sorusu ve 1 adet eğlenceli çıkış bileti (exit ticket) etkinliği hazırla.'",
+    practicalExercise: "Brisk Teaching eklentisini kullanarak branşınızla ilgili bir web sayfasından ve 1 adet YouTube ders videosundan 3 kademeli okuma parçası ve 5 soruluk bir quiz üretip Google Dokümanlar'a aktarın; Kahoot yarışmasına dönüştürün.",
+    samplePrompt: "Brisk Teaching İstem Şablonu: '[Ders/Konu] konusunda seçtiğim YouTube videosunu analiz et. 6. sınıf düzeyine uygun 1 sayfalık seviyelendirilmiş ders özeti çıkar, ardından 5 adet çoktan seçmeli kazanım sorusu ve açıklayıcı cevap anahtarı oluştur. Çıktıyı doğrudan Google Dokümanlar formatına aktar.'",
     materials: [
-      { title: "Öğretmene Özel Yapay Zekâ Platformları Karşılaştırma Tablosu", type: "belge" },
       { title: "Brisk Teaching Kurulum ve Kullanım Rehberi", type: "link" },
-      { title: "Diffit ile Farklılaştırılmış Materyal Hazırlama", type: "belge" }
+      { title: "Google Dokümanlar ve Slaytlar Entegrasyon Kılavuzu", type: "belge" },
+      { title: "Kahoot & Wayground Quiz Aktarım Şablonu", type: "sablon" }
     ],
-    notes: "Öğretmen platformlarının çoğu ücretsiz öğretmen hesabı (MEB e-posta uzantısıyla) sunmaktadır."
+    notes: "Brisk Teaching, MEB e-posta uzantılı hesaplara veya öğretmen doğrulamasına sahip eğitimcilere ücretsiz gelişmiş özellikler sağlamaktadır."
   },
   {
     id: "hafta-2",
     weekNumber: 2,
     unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
-    title: "Hafta 2 · Consensus + ChatGPT + NotebookLM: Kaynaktan materyale",
+    title: "Hafta 2 · MagicSchool, Curipod, Eduaide ve Diffit",
+    topic: "Öğretmene özel platformlar",
+    appChain: "→ MagicSchool → Curipod → Eduaide → Diffit → Wayground → Twee",
+    duration: "40 Dakika (1 Ders Saati)",
+    category: "icerik",
+    targetOutput: "Öğretmen asistanlarıyla türetilmiş 1 ünite ders paketi + akıllı tahta Curipod sunumu",
+    summary: "Öğretmenler için geliştirilmiş dikey yapay zekâ platformları ekosistemi. Curipod ile akıllı tahtada canlı çizim, anket ve açık uçlu öğrenci katılım sunumları; MagicSchool ve Eduaide ile 60+ pedagojik branş asistanı, BEP planı ve rubrik oluşturma; Diffit ile her konuyu istenen sınıf düzeyine uyarlama; Wayground ve Twee ile interaktif aktiviteler.",
+    learningOutcomes: [
+      "Curipod ile öğrencilerin cep telefonu veya akıllı tahtadan katıldığı canlı çizim, kelime bulutu ve anket etkinlikleri tasarlar.",
+      "MagicSchool ve Eduaide platformlarının 60'tan fazla hazır pedagojik şablonunu (rubrik, BEP, kavram yanılgısı analizi) kullanır.",
+      "Diffit ve Twee ile herhangi bir metin veya YouTube videosundan farklılaştırılmış seviyeli çalışma kâğıtları ve kelime aktiviteleri üretir."
+    ],
+    sessionFlow: [
+      { minuteRange: "00-08 dk", activity: "Eğitim Dikeyindeki Platformların Mimarisi", description: "Genel yapay zekâ yerine öğretmen odaklı platformların hazır pedagojik şablon avantajları." },
+      { minuteRange: "08-18 dk", activity: "Curipod ile Akıllı Tahta Canlı Dersi", description: "Öğrencilerin tahtaya çizim gönderdiği, fikir yazdığı etkileşimli ders destesi üretme." },
+      { minuteRange: "18-28 dk", activity: "MagicSchool & Eduaide Pedagojik Asistanları", description: "Rubrik, BEP planı, seviyeli ders özeti ve kavram yanılgısı giderici etkinlikler." },
+      { minuteRange: "28-40 dk", activity: "Diffit, Wayground & Twee ile Farklılaştırma", description: "Aynı konuyu 3 farklı seviyede çalışma kâğıdına ve kelime oyunlarına dönüştürme." }
+    ],
+    keyTools: [
+      { name: "MagicSchool.ai", url: "https://magicschool.ai", purpose: "60+ hazır pedagojik öğretmen asistanı ve rubrik oluşturucu" },
+      { name: "Curipod", url: "https://curipod.com", purpose: "Canlı öğrenci etkileşimli akıllı tahta sunumları ve anketler" },
+      { name: "Eduaide.Ai", url: "https://www.eduaide.ai", purpose: "Ders planı, ünite tasarımı ve pedagojik oyunlaştırma" },
+      { name: "Diffit", url: "https://web.diffit.me", purpose: "Her konuyu her sınıf seviyesine uygun çalışma kâğıdına dönüştürme" },
+      { name: "Wayground / Twee", url: "https://twee.com", purpose: "YouTube videosundan soru ve ders aktivitesi türetme araçları" }
+    ],
+    practicalExercise: "Dersinizin bir konusu için MagicSchool veya Eduaide ile 1 adet analitik rubrik hazırlayın; ardından Curipod'da öğrencilerin akıllı tahtadan katılacağı 5 slaytlık interaktif bir ders sunumu oluşturun.",
+    samplePrompt: "Eduaide / MagicSchool İstemi: 'Branş: [Branşınız]. Sınıf Düzeyi: [Sınıf]. Konu: [Konu Başlığı]. Bu konu için öğrencilerin ilgisini çekecek 1 adet gerçek hayat vaka senaryosu, 3 adet basamaklı tartışma sorusu ve 1 adet eğlenceli çıkış bileti (exit ticket) etkinliği hazırla.'",
+    materials: [
+      { title: "Öğretmene Özel Yapay Zekâ Platformları Karşılaştırma Tablosu", type: "belge" },
+      { title: "Curipod Akıllı Tahta İnteraktif Sunum Kılavuzu", type: "link" },
+      { title: "Diffit ile Farklılaştırılmış Materyal Hazırlama", type: "belge" }
+    ],
+    notes: "MagicSchool ve Curipod akıllı tahta ile mükemmel uyumlu çalışmakta olup öğrenci girişi için sadece kod/PIN yeterlidir."
+  },
+  {
+    id: "hafta-3",
+    weekNumber: 3,
+    unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
+    title: "Hafta 3 · Consensus + ChatGPT + NotebookLM: Kaynaktan materyale",
     topic: "Kaynaktan materyale giden zincir",
     appChain: "→ Consensus → ChatGPT/Gemini → NotebookLM → Perplexity",
     duration: "40 Dakika (1 Ders Saati)",
@@ -146,10 +182,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "NotebookLM'e yüklenen kaynakların telif ve doğruluk denetimi öğretmen gözetiminde yapılmalıdır."
   },
   {
-    id: "hafta-3",
-    weekNumber: 3,
+    id: "hafta-4",
+    weekNumber: 4,
     unitName: "1. ÜNİTE — MATERYAL ÜRETİMİ: PLATFORMLAR VE KAYNAKLI ÜRETİM",
-    title: "Hafta 3 · Claude: Ders planı, çalışma kâğıdı, idari işler ve veri",
+    title: "Hafta 4 · Claude: Ders planı, çalışma kâğıdı, idari işler ve veri",
     topic: "Ders planı, çalışma kâğıdı, idari işler",
     appChain: "→ Claude → ChatGPT/Gemini → Diffit → Excel",
     duration: "40 Dakika (1 Ders Saati)",
@@ -182,10 +218,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "İdari dokümanlar işlenirken öğrenci ve öğretmen adlarının gizliliğine dikkat edilmelidir."
   },
   {
-    id: "hafta-4",
-    weekNumber: 4,
+    id: "hafta-5",
+    weekNumber: 5,
     unitName: "2. ÜNİTE — GÖRSEL ÜRETİM",
-    title: "Hafta 4 · Görsel kodlar: Bir fotoğraftan diyagram ve kesit",
+    title: "Hafta 5 · Görsel kodlar: Bir fotoğraftan diyagram ve kesit",
     topic: "Görsel kodlar",
     appChain: "→ ChatGPT/Gemini Görsel → 200+ Görsel Kod",
     duration: "40 Dakika (1 Ders Saati)",
@@ -217,10 +253,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Diyagramlarda numara ve işaretçilerin net çıkması için açık renkli ve sade arka plan tercih edilmelidir."
   },
   {
-    id: "hafta-5",
-    weekNumber: 5,
+    id: "hafta-6",
+    weekNumber: 6,
     unitName: "3. ÜNİTE — YAPAY ZEKÂ DESTEKLİ WEB UYGULAMASI",
-    title: "Hafta 5 · Google AI Studio ile uygulama geliştirme",
+    title: "Hafta 6 · Google AI Studio ile uygulama geliştirme",
     topic: "Uygulama geliştirme",
     appChain: "→ Google AI Studio → Google Stitch → v0.dev",
     duration: "40 Dakika (1 Ders Saati)",
@@ -252,10 +288,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "AI Studio'da geliştirilen modeller API anahtarı ile okul web sitelerine veya mobil uygulamalara kolaylıkla entegre edilebilir."
   },
   {
-    id: "hafta-6",
-    weekNumber: 6,
+    id: "hafta-7",
+    weekNumber: 7,
     unitName: "3. ÜNİTE — YAPAY ZEKÂ DESTEKLİ WEB UYGULAMASI",
-    title: "Hafta 6 · GitHub ve Vercel ile yayınlama",
+    title: "Hafta 7 · GitHub ve Vercel ile yayınlama",
     topic: "Yayınlama",
     appChain: "→ GitHub → Vercel",
     duration: "40 Dakika (1 Ders Saati)",
@@ -277,7 +313,7 @@ export const INITIAL_WEEKS: WeekSession[] = [
       { name: "GitHub", url: "https://github.com", purpose: "Kod depolama, sürüm kontrol ve açık kaynak paylaşımı" },
       { name: "Vercel", url: "https://vercel.com", purpose: "GitHub projelerini anında canlı web sitesine dönüştüren sunucusuz bulut platformu" }
     ],
-    practicalExercise: "5. haftada oluşturduğunuz asistan veya web materyalini GitHub deposuna yükleyip Vercel ile canlıya alın; oluşturduğunuz linki QR koda dönüştürün.",
+    practicalExercise: "6. haftada oluşturduğunuz asistan veya web materyalini GitHub deposuna yükleyip Vercel ile canlıya alın; oluşturduğunuz linki QR koda dönüştürün.",
     samplePrompt: "README Markdown İstemi: '[Uygulama Adı] için profesyonel bir GitHub README.md dosyası hazırla. Başlık, amaç, öğretmen ve öğrenci kullanım adımları, ekran görüntüsü yeri ve lisans bilgilerini içersin.'",
     materials: [
       { title: "GitHub & Vercel Tek Tıkla Dağıtım Kılavuzu", type: "belge" },
@@ -286,10 +322,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Vercel dağıtımları tamamen ücretsiz olup her kod güncellemesinde otomatik olarak güncellenir."
   },
   {
-    id: "hafta-7",
-    weekNumber: 7,
+    id: "hafta-8",
+    weekNumber: 8,
     unitName: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
-    title: "Hafta 7 · Tinkercad ile 3B tasarım ve baskı",
+    title: "Hafta 8 · Tinkercad ile 3B tasarım ve baskı",
     topic: "3B tasarım ve baskı",
     appChain: "→ Tinkercad → Bambu Studio/Cura → 3B yazıcı → Meshy/Tripo",
     duration: "40 Dakika (1 Ders Saati)",
@@ -323,10 +359,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Laboratuvarda 3B yazıcı bulunmayan okullarda Tinkercad içindeki AR (Artırılmış Gerçeklik) görüntüleme modu kullanılabilir."
   },
   {
-    id: "hafta-8",
-    weekNumber: 8,
+    id: "hafta-9",
+    weekNumber: 9,
     unitName: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
-    title: "Hafta 8 · Seslendirme: Yazıyı sese çevirmek",
+    title: "Hafta 9 · Seslendirme: Yazıyı sese çevirmek",
     topic: "Seslendirme",
     appChain: "→ ElevenLabs → Suno → Moises",
     duration: "40 Dakika (1 Ders Saati)",
@@ -358,10 +394,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Üretilen sesler akıllı tahtada ders başlangıç zili veya ders sonu toparlanma müziği olarak da kullanılabilir."
   },
   {
-    id: "hafta-9",
-    weekNumber: 9,
+    id: "hafta-10",
+    weekNumber: 10,
     unitName: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
-    title: "Hafta 9 · Lumen5 ile metinden video",
+    title: "Hafta 10 · Lumen5 ile metinden video",
     topic: "Metinden video",
     appChain: "→ Lumen5 → ChatGPT/Claude → Padlet AI",
     duration: "40 Dakika (1 Ders Saati)",
@@ -393,10 +429,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Videolardaki yazıların akıllı tahtadan ve telefon ekranından rahatça okunabilmesi için sahne başına metin miktarı az tutulmalıdır."
   },
   {
-    id: "hafta-10",
-    weekNumber: 10,
+    id: "hafta-11",
+    weekNumber: 11,
     unitName: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
-    title: "Hafta 10 · Üretken video ile kısa eğitim videosu",
+    title: "Hafta 11 · Üretken video ile kısa eğitim videosu",
     topic: "Üretken video ile kısa film",
     appChain: "→ Google Flow/Veo → Kling → Gemini → Canva → Book Creator",
     duration: "40 Dakika (1 Ders Saati)",
@@ -430,10 +466,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Üretken video araçlarında kısa ve net hareket tanımları (slow zoom, pan) daha tutarlı sonuçlar verir."
   },
   {
-    id: "hafta-11",
-    weekNumber: 11,
+    id: "hafta-12",
+    weekNumber: 12,
     unitName: "4. ÜNİTE — TASARIM, SES VE GÖRÜNTÜ",
-    title: "Hafta 11 · VR gözlük kullanımı ve sınıf uygulamaları",
+    title: "Hafta 12 · VR gözlük kullanımı ve sınıf uygulamaları",
     topic: "VR gözlük ve sanal gezi",
     appChain: "→ VR gözlük → Google Arts & Culture → Google Earth → YouTube 360° → Skybox AI",
     duration: "40 Dakika (1 Ders Saati)",
@@ -468,10 +504,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "VR gözlüğü bulunmayan sınıflarda 360 derece panoramalar akıllı tahtada fareyle döndürülerek tüm sınıfla interaktif şekilde gezilebilir."
   },
   {
-    id: "hafta-12",
-    weekNumber: 12,
+    id: "hafta-13",
+    weekNumber: 13,
     unitName: "5. ÜNİTE — KODLAMA, ROBOTİK VE ELEKTRONİK",
-    title: "Hafta 12 · Etkileşimli içerik, mini oyun ve simülasyon",
+    title: "Hafta 13 · Etkileşimli içerik, mini oyun ve simülasyon",
     topic: "Etkileşimli oyun ve simülasyon",
     appChain: "→ Claude → ChatGPT/Gemini → Genially → Wayground → Teachable Machine",
     duration: "40 Dakika (1 Ders Saati)",
@@ -505,10 +541,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Artifacts'ta üretilen oyunlar tek tıkla HTML olarak indirilip internet olmadan da akıllı tahtalarda açılabilir."
   },
   {
-    id: "hafta-13",
-    weekNumber: 13,
+    id: "hafta-14",
+    weekNumber: 14,
     unitName: "5. ÜNİTE — KODLAMA, ROBOTİK VE ELEKTRONİK",
-    title: "Hafta 13 · LEGO SPIKE Essential ile kodlama ve tasarım",
+    title: "Hafta 14 · LEGO SPIKE Essential ile kodlama ve tasarım",
     topic: "LEGO SPIKE ile kodlama",
     appChain: "→ SPIKE Essential → SPIKE uygulaması → Scratch → ML for Kids",
     duration: "40 Dakika (1 Ders Saati)",
@@ -542,10 +578,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Fiziksel set sayısı kısıtlı sınıflarda öğrenciler 3'er kişilik mühendislik ekipleri halinde çalıştırılmalıdır."
   },
   {
-    id: "hafta-14",
-    weekNumber: 14,
+    id: "hafta-15",
+    weekNumber: 15,
     unitName: "5. ÜNİTE — KODLAMA, ROBOTİK VE ELEKTRONİK",
-    title: "Hafta 14 · Arduino ile devre tasarımı çalışmaları",
+    title: "Hafta 15 · Arduino ile devre tasarımı çalışmaları",
     topic: "Arduino ile devre tasarımı",
     appChain: "→ Tinkercad Circuits → Arduino IDE → Arduino Uno → PictoBlox",
     duration: "40 Dakika (1 Ders Saati)",
@@ -579,10 +615,10 @@ export const INITIAL_WEEKS: WeekSession[] = [
     notes: "Fiziksel donanım olmasa dahi Tinkercad Circuits ile tüm öğrenciler simülasyon üzerinden kodlarını hatasız test edebilir."
   },
   {
-    id: "hafta-15",
-    weekNumber: 15,
+    id: "hafta-16",
+    weekNumber: 16,
     unitName: "6. ÜNİTE — SUNUM VE GÖRSELLEŞTİRME",
-    title: "Hafta 15 · Gamma, Napkin ve Jeda ile sunum · Kapanış",
+    title: "Hafta 16 · Gamma, Napkin ve Jeda ile sunum · Kapanış",
     topic: "Sunum, görselleştirme ve kapanış",
     appChain: "→ Gamma → Napkin.ai → Jeda.ai → Mapify",
     duration: "40 Dakika (1 Ders Saati)",
@@ -592,7 +628,7 @@ export const INITIAL_WEEKS: WeekSession[] = [
     learningOutcomes: [
       "Gamma App ile kazanım metninden profesyonel, modern ve görsel olarak tutarlı slaytlar türetir.",
       "Napkin.ai ile metinlerdeki adımları ve ilişkileri tek tıkla infografik şemalara ve vektörlere dönüştürür.",
-      "Jeda.ai ve Mapify ile zihin haritaları çıkartır; 15 haftalık eğitim sürecindeki iyi örneklerini meslektaşlarıyla paylaşır."
+      "Jeda.ai ve Mapify ile zihin haritaları çıkartır; 16 haftalık eğitim sürecindeki iyi örneklerini meslektaşlarıyla paylaşır."
     ],
     sessionFlow: [
       { minuteRange: "00-08 dk", activity: "Açılış & Görselleştirmenin Gücü", description: "Bilişsel yükü azaltan infografik özetleme ve yapay zekâ sunum araçları." },
@@ -606,8 +642,8 @@ export const INITIAL_WEEKS: WeekSession[] = [
       { name: "Jeda.ai", url: "https://www.jeda.ai", purpose: "Görsel yapay zekâ çalışma alanı ve ortak akıl tahtası" },
       { name: "Mapify", url: "https://mapify.so", purpose: "Her türlü içerikten tek tıkla yapay zekâlı zihin haritası üretimi" }
     ],
-    practicalExercise: "15 haftalık eğitim sürecinde geliştirdiğiniz en başarılı çalışmayı Gamma ve Napkin ile 5 slaytlık bir portfolyo sunumuna dönüştürün ve okul arşivine ekleyin.",
-    samplePrompt: "Gamma Sunum İstemi: 'Konu: [Branşınız] Yapay Zekâ ve Eğitim Teknolojileri Dönem Portfolyosu.\nHedef Kitle: Okul öğretmenleri ve zümre arkadaşları.\nİçerik:\n1. Başlık ve Giriş\n2. Materyal Üretimi: Platformlar ve Kaynaklı Üretim (Hafta 1-3)\n3. Görsel Üretim & AI Web Uygulaması (Hafta 4-6)\n4. Tasarım, Ses, Görüntü ve VR (Hafta 7-11)\n5. Kodlama, Robotik ve Elektronik (Hafta 12-14)\n6. Süreç Değerlendirmesi ve Kapanış\nFormat: 6 slaytlık modern ve canlı bir Gamma sunumu taslağı hazırla.'",
+    practicalExercise: "16 haftalık eğitim sürecinde geliştirdiğiniz en başarılı çalışmayı Gamma ve Napkin ile 5 slaytlık bir portfolyo sunumuna dönüştürün ve okul arşivine ekleyin.",
+    samplePrompt: "Gamma Sunum İstemi: 'Konu: [Branşınız] Yapay Zekâ ve Eğitim Teknolojileri Dönem Portfolyosu.\nHedef Kitle: Okul öğretmenleri ve zümre arkadaşları.\nİçerik:\n1. Başlık ve Giriş\n2. Materyal Üretimi: Platformlar ve Kaynaklı Üretim (Hafta 1-4)\n3. Görsel Üretim & AI Web Uygulaması (Hafta 5-7)\n4. Tasarım, Ses, Görüntü ve VR (Hafta 8-12)\n5. Kodlama, Robotik ve Elektronik (Hafta 13-15)\n6. Süreç Değerlendirmesi ve Kapanış\nFormat: 6 slaytlık modern ve canlı bir Gamma sunumu taslağı hazırla.'",
     materials: [
       { title: "Okulumuz Öğretmen Akademisi Katılım Belgesi", type: "belge" },
       { title: "Napkin.ai Hızlı İnfografik Rehberi", type: "link" }

@@ -99,11 +99,11 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
               Haftalık Eğitim Oturumları & Müfredat
             </h3>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
-              6 Ünite · 15 Hafta · 40 dk / Hafta
+              6 Ünite · 16 Hafta · 40 dk / Hafta
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-400">
-            15 Haftalık Eğitim Teknolojileri Programı · 2026–2027 (İçindekiler & Hafta Hafta Uygulamalar)
+            16 Haftalık Eğitim Teknolojileri Programı · 2026–2027 (İçindekiler & Hafta Hafta Uygulamalar)
           </p>
         </div>
 
@@ -229,7 +229,7 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
                 : 'bg-slate-900/70 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
             }`}
           >
-            Tüm Üniteler (1-15)
+            Tüm Üniteler (1-16)
           </button>
           {CURRICULUM_UNITS.map((unit) => (
             <button
@@ -261,7 +261,7 @@ export const CurriculumSection: React.FC<CurriculumSectionProps> = ({
               </p>
             </div>
             <span className="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700 hidden sm:inline">
-              15 Hafta Tam Liste
+              16 Hafta Tam Liste
             </span>
           </div>
 

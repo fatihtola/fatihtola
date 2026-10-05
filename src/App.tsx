@@ -90,17 +90,19 @@ export default function App() {
     }
   });
 
-  // Load weeks from localStorage or default (ensuring all 15 weeks are loaded and match PDF)
+  // Load weeks from localStorage or default (ensuring all 16 weeks are loaded and match PDF)
   const [weeks, setWeeks] = useState<WeekSession[]>(() => {
     try {
       const saved = localStorage.getItem('portal_weekly_curriculum');
       if (saved) {
         const parsed = JSON.parse(saved);
-        const hasWeek1Brisk = parsed.some((w: any) => w.id === 'hafta-1' && w.title && w.title.includes('Brisk'));
-        const hasWeek2Consensus = parsed.some((w: any) => w.id === 'hafta-2' && w.title && w.title.includes('Consensus'));
+        const hasWeek1Brisk = parsed.some((w: any) => w.id === 'hafta-1' && w.title && w.title.includes('Brisk Teaching'));
+        const hasWeek2Magic = parsed.some((w: any) => w.id === 'hafta-2' && w.title && w.title.includes('MagicSchool'));
+        const hasWeek3Consensus = parsed.some((w: any) => w.id === 'hafta-3' && w.title && w.title.includes('Consensus'));
+        const hasWeek16 = parsed.some((w: any) => w.id === 'hafta-16');
         const hasTopic = parsed.some((w: any) => Boolean(w.topic));
         const hasAppChain = parsed.some((w: any) => Boolean(w.appChain));
-        if (Array.isArray(parsed) && parsed.length >= 15 && parsed.some((w: any) => w.id === 'hafta-15') && hasWeek1Brisk && hasWeek2Consensus && hasTopic && hasAppChain) {
+        if (Array.isArray(parsed) && parsed.length >= 16 && hasWeek16 && hasWeek1Brisk && hasWeek2Magic && hasWeek3Consensus && hasTopic && hasAppChain) {
           return parsed;
         }
       }

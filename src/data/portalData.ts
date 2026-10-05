@@ -34,7 +34,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "15:30 - 16:10",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -46,7 +46,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "15:30 - 16:10",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -58,7 +58,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "15:30 - 16:10",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -70,7 +70,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "15:30 - 16:10",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -82,7 +82,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "14:30 - 15:10",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -94,7 +94,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "16:20 - 17:00",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -106,7 +106,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "16:20 - 17:00",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -118,7 +118,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "16:20 - 17:00",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -130,7 +130,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "16:20 - 17:00",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   },
@@ -142,7 +142,7 @@ export const INITIAL_GROUPS: TeacherGroup[] = [
     timeSlot: "15:20 - 16:00",
     location: "Maker Atölyesi",
     currentWeek: 1,
-    totalWeeks: 15,
+    totalWeeks: 16,
     participants: [],
     notes: "Uygulamalı yapay zekâ atölyesi ve ders materyali tasarımı."
   }
